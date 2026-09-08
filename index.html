@@ -1,627 +1,1417 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Timetable</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Westminster Timetable</title>
+
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #fff;
-    color: #333;
+:root{
+  --blue:#3f91d6;
+  --border:#ccc;
+  --grid:#ddd;
+  --text:#333;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:#fff;
+}
+
+.page{
+  max-width:900px;
+  margin:auto;
+}
+
+/* HEADER */
+
+header{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:6px 10px;
+  border-bottom:1px solid #ddd;
+}
+
+.logo{
+  font-weight:800;
+  font-size:25px;
+  line-height:.9;
+  letter-spacing:-1.5px;
+  color:#111;
+}
+
+.logo span{
+  display:block;
+}
+
+.menu{
+  border:0;
+  background:var(--blue);
+  color:white;
+  border-radius:5px;
+  font-size:28px;
+  width:45px;
+  height:48px;
+  cursor:pointer;
+}
+
+/* NAVIGATION */
+
+.toolbar{
+  height:53px;
+  background:var(--blue);
+  margin:10px 10px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 10px;
+  border-radius:5px 5px 0 0;
+}
+
+.tools{
+  display:flex;
+  gap:12px;
+}
+
+.tool{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  font-size:19px;
+  cursor:pointer;
+}
+
+/* DATE */
+
+.datebar{
+  margin:0 10px;
+  height:34px;
+  border:1px solid var(--border);
+  background:#f7f7f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--blue);
+  font-weight:bold;
+}
+
+/* TIMETABLE */
+
+.schedule-wrap{
+  height:calc(100vh - 260px);
+  min-height:520px;
+  overflow:auto;
+  margin:0 10px;
+  border:1px solid var(--border);
+  border-top:0;
+}
+
+.schedule{
+  position:relative;
+  min-width:430px;
+  height:1365px;
+}
+
+.hour{
+  height:105px;
+  display:grid;
+  grid-template-columns:55px 1fr;
+  border-bottom:1px solid var(--border);
+}
+
+.time{
+  padding:10px 8px 0 0;
+  text-align:right;
+  color:var(--blue);
+  font-weight:bold;
+  font-size:13px;
+  border-right:1px solid var(--border);
+}
+
+.time small{
+  font-size:9px;
+}
+
+.slot{
+  position:relative;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 25px,
+      var(--grid) 25px,
+      var(--grid) 26px
+    );
+}
+
+/* CLASS BOX */
+
+.event{
+  position:absolute;
+  left:7px;
+  right:7px;
+  border-left:4px solid var(--blue);
+  background:#eaf4fd;
+  border-radius:2px;
+  padding:7px 8px;
+  color:#236b9f;
+  font-size:13px;
+  line-height:18px;
+  overflow:hidden;
+  box-shadow:0 0 0 1px #d8eaf7;
+}
+
+.event strong{
+  display:block;
+  font-size:14px;
+}
+
+.event small{
+  display:block;
+  color:#555;
+  margin-top:2px;
+}
+
+/* FOOTER */
+
+.footer{
+  text-align:center;
+  padding:9px 10px 15px;
+  font-size:13px;
+}
+
+.updated{
+  color:var(--blue);
+  font-weight:bold;
+  line-height:18px;
+}
+
+.links{
+  margin-top:8px;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  align-items:center;
+}
+
+.cmis{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:-2px;
+}
+
+.cmis em{
+  font-style:normal;
+  color:#e64e57;
+}
+
+.copy{
+  font-size:10px;
+  color:#777;
+  margin-top:6px;
+  line-height:13px;
+}
+
+/* SIDE MENU */
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-280px;
+  width:270px;
+  height:100%;
+  background:#fff;
+  box-shadow:-3px 0 12px #0003;
+  z-index:20;
+  padding:20px;
+  transition:.2s;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawer button{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:1px solid #ddd;
+  background:#f7f7f7;
+  cursor:pointer;
+  font-size:15px;
+}
+
+/* CALENDAR OVERVIEW */
+
+.calendar-view{
+  display:none;
+  margin:0 10px;
+  border:1px solid var(--border);
+  padding:10px;
+  background:white;
+}
+
+.calendar-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:var(--blue);
+  font-weight:bold;
+  margin-bottom:10px;
+  font-size:17px;
+}
+
+.calendar-arrow{
+  width:34px!important;
+  height:34px;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%;
+  background:white!important;
+  color:var(--blue);
+  border:1px solid var(--blue)!important;
+}
+
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:2px;
+}
+
+.month-grid div{
+  min-height:55px;
+  border:1px solid #ddd;
+  padding:5px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.month-grid .weekday{
+  min-height:28px;
+  background:var(--blue);
+  color:white;
+  text-align:center;
+  font-weight:bold;
+  cursor:default;
+}
+
+.month-grid .has-event{
+  background:#eaf4fd;
+  color:#236b9f;
+  font-weight:bold;
+}
+
+.month-grid .selected{
+  outline:2px solid var(--blue);
+}
+
+.year-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.year-month{
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #ddd;
+  color:var(--blue);
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.year-month:hover,
+.month-grid div:hover{
+  background:#eef6fd;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  header{
+    height:72px;
   }
 
-  .page {
-    width: min(100%, 900px);
-    margin: 0 auto;
-    min-height: 100vh;
-    background: white;
+  .logo{
+    font-size:23px;
   }
 
-  .top-header {
-    height: 78px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px 7px 12px;
-    border-bottom: 1px solid #ddd;
+  .schedule-wrap{
+    height:calc(100vh - 250px);
   }
 
-  .brand {
-    font-weight: 800;
-    font-size: clamp(25px, 5vw, 43px);
-    line-height: .82;
-    letter-spacing: -1.7px;
-    color: #111;
-    text-transform: uppercase;
+  .year-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .menu {
-    width: 47px;
-    height: 47px;
-    border: 0;
-    border-radius: 5px;
-    background: #5b91d0;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-    line-height: 1;
-  }
-
-  .toolbar {
-    height: 53px;
-    background: #5b91d0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 11px;
-  }
-
-  .toolbar-left, .toolbar-right {
-    display: flex;
-    gap: 13px;
-    align-items: center;
-  }
-
-  .tool-btn {
-    width: 35px;
-    height: 35px;
-    border: 1.7px solid white;
-    border-radius: 50%;
-    color: white;
-    background: transparent;
-    font-size: 21px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .date-row {
-    height: 31px;
-    display: flex;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .time-head {
-    width: 68px;
-    border-right: 3px solid #ccc;
-  }
-
-  .date-title {
-    flex: 1;
-    text-align: center;
-    padding-top: 5px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #5b91d0;
-  }
-
-  .calendar-wrap {
-    position: relative;
-  }
-
-  #datePicker {
-    position: absolute;
-    opacity: 0;
-    width: 1px;
-    height: 1px;
-    pointer-events: none;
-  }
-
-  .grid {
-    position: relative;
-    height: 900px;
-    overflow-y: auto;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    background:
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 43px,
-        #ddd 44px,
-        #ddd 45px
-      );
-  }
-
-  .hour {
-    height: 135px;
-    position: relative;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .hour-label {
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 68px;
-    height: 100%;
-    border-right: 3px solid #ccc;
-    padding-right: 8px;
-    text-align: right;
-    color: #5b91d0;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .hour-label span {
-    display: inline-block;
-    transform: translateY(0);
-  }
-
-  .events-area {
-    position: absolute;
-    left: 68px;
-    right: 0;
-    top: 0;
-    height: 100%;
-  }
-
-  .event {
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    border-radius: 3px;
-    background: #78a8dc;
-    border: 1px solid #4f84c2;
-    color: white;
-    padding: 7px 9px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.12);
-    cursor: pointer;
-    overflow: hidden;
-    font-size: 13px;
-    line-height: 1.25;
-  }
-
-  .event strong {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 3px;
-  }
-
-  .empty {
-    height: 135px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .footer {
-    text-align: center;
-    color: #5b91d0;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 8px 10px 3px;
-    line-height: 1.2;
-  }
-
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    color: #444;
-    font-weight: 400;
-    font-size: 15px;
-    margin: 9px 0 6px;
-  }
-
-  .cmis {
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: -2px;
-    color: #333;
-  }
-
-  .cmis span { color: #e75b59; }
-
-  .copyright {
-    font-size: 10px;
-    color: #777;
-    font-weight: 400;
-    line-height: 1.25;
-    padding-bottom: 12px;
-  }
-
-  .overview-menu {
-    display: none;
-    position: absolute;
-    z-index: 20;
-    right: 10px;
-    top: 112px;
-    background: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0,0,0,.2);
-    width: 130px;
-  }
-
-  .overview-menu button {
-    width: 100%;
-    border: 0;
-    background: white;
-    padding: 12px;
-    text-align: left;
-    font-size: 15px;
-    cursor: pointer;
-  }
-
-  .overview-menu button:hover {
-    background: #f0f0f0;
-  }
-
-  .overview {
-    display: none;
-    border: 1px solid #ccc;
-    background: white;
-    padding: 10px;
-  }
-
-  .overview-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #5b91d0;
-    font-weight: 700;
-    font-size: 17px;
-    margin-bottom: 10px;
-  }
-
-  .overview-nav {
-    border: 1px solid #5b91d0;
-    background: white;
-    color: #5b91d0;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    font-size: 18px;
-    cursor: pointer;
-  }
-
-  .month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
-  }
-
-  .month-grid > div {
-    min-height: 48px;
-    border: 1px solid #e0e0e0;
-    padding: 5px;
-    font-size: 12px;
-  }
-
-  .month-grid .weekday {
-    min-height: auto;
-    background: #5b91d0;
-    color: white;
-    text-align: center;
-    font-weight: 700;
-  }
-
-  .month-grid .has-event {
-    background: #eaf2fb;
-    color: #333;
-    cursor: pointer;
-  }
-
-  .month-grid .selected {
-    outline: 2px solid #5b91d0;
-  }
-
-  .year-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .year-month {
-    border: 1px solid #ddd;
-    padding: 14px 8px;
-    text-align: center;
-    cursor: pointer;
-    color: #5b91d0;
-    font-weight: 700;
-  }
-
-  .year-month:hover {
-    background: #f0f0f0;
-  }
-
-  .no-class {
-    display: none;
-    position: absolute;
-    left: 80px;
-    top: 45%;
-    color: #999;
-    font-size: 14px;
-  }
-
-  @media (max-width: 600px) {
-    .top-header { height: 70px; }
-    .brand { font-size: 27px; }
-    .menu { width: 42px; height: 42px; }
-    .grid { height: 760px; }
-    .hour { height: 115px; }
-    .empty { height: 115px; }
-    .event { font-size: 12px; }
-    .event strong { font-size: 13px; }
-  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="page">
-  <header class="top-header">
-    <div class="brand">UNIVERSITY OF<br>WESTMINSTER</div>
-    <button class="menu" aria-label="Menu">≡</button>
-  </header>
 
-  <div class="toolbar">
-    <div class="toolbar-left">
-      <button class="tool-btn" onclick="moveDay(-1)" title="Previous day">←</button>
-      <div class="calendar-wrap">
-        <button class="tool-btn" onclick="openDatePicker()" title="Choose date">▦</button>
-        <input id="datePicker" type="date" onchange="setDate(this.value)">
-      </div>
-    </div>
-    <div class="toolbar-right">
-      <button class="tool-btn" onclick="showMonthInfo()" title="Timetable menu">▦</button>
-      <button class="tool-btn" onclick="moveDay(1)" title="Next day">→</button>
-    </div>
+<header>
+
+  <div class="logo">
+    <span>UNIVERSITY OF</span>
+    <span>WESTMINSTER ▦</span>
   </div>
 
-  <div class="date-row">
-    <div class="time-head"></div>
-    <div class="date-title" id="dateTitle"></div>
+  <button class="menu" id="menu">≡</button>
+
+</header>
+
+
+<div class="toolbar">
+
+  <div class="tools">
+    <button class="tool" id="prev">←</button>
+    <button class="tool" id="today">▦</button>
   </div>
 
-  <div class="overview-menu" id="overviewMenu">
-    <button onclick="setView('day')">Day</button>
-    <button onclick="setView('month')">Month</button>
-    <button onclick="setView('year')">Year</button>
+  <div class="tools">
+    <button class="tool" id="jump">⌖</button>
+    <button class="tool" id="next">→</button>
   </div>
 
-  <div class="overview" id="overview">
-    <div class="overview-head">
-      <button class="overview-nav" onclick="changeOverview(-1)">←</button>
-      <div id="overviewTitle"></div>
-      <button class="overview-nav" onclick="changeOverview(1)">→</button>
-    </div>
-    <div id="overviewContent"></div>
+</div>
+
+
+<div class="datebar" id="date"></div>
+
+
+<!-- NORMAL DAY VIEW -->
+
+<div class="schedule-wrap" id="scroll">
+
+  <div class="schedule" id="schedule"></div>
+
+</div>
+
+
+<!-- CALENDAR OVERVIEW -->
+
+<div class="calendar-view" id="calendarView">
+
+  <div class="calendar-header">
+
+    <button class="calendar-arrow" id="calendarPrev">←</button>
+
+    <span id="calendarTitle"></span>
+
+    <button class="calendar-arrow" id="calendarNext">→</button>
+
   </div>
 
-  <main class="grid" id="grid">
-    <div class="hour"><div class="hour-label">8<sup>AM</sup></div></div>
-    <div class="hour"><div class="hour-label">9<sup>AM</sup></div></div>
-    <div class="hour"><div class="hour-label">10<sup>AM</sup></div></div>
-    <div class="hour"><div class="hour-label">11<sup>AM</sup></div></div>
-    <div class="hour"><div class="hour-label">12<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">1<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">2<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">3<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">4<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">5<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">6<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">7<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">8<sup>PM</sup></div></div>
-    <div class="hour"><div class="hour-label">9<sup>PM</sup></div></div>
-    <div class="events-area" id="events"></div>
-    <div class="no-class" id="noClass">No timetabled events</div>
-  </main>
+  <div id="calendarContent"></div>
 
-  <div class="footer" id="updated">Timetabled events last full update 5:20 am on 7 September 2026</div>
-  <div class="footer-links">
+</div>
+
+
+<footer class="footer">
+
+  <div class="updated">
+    Timetabled events last full update 5:20 am on 7<br>
+    September 2026
+  </div>
+
+  <div class="links">
+
     <span>Accessibility statement</span>
-    <div class="cmis">cmis<span>go</span></div>
+
+    <span class="cmis">
+      cmis<em>go</em>
+    </span>
+
     <span>About</span>
+
   </div>
-  <div class="copyright">
+
+  <div class="copy">
     © Copyright - Advanced Computer Software Group Ltd All Rights Reserved.<br>
     Advanced is a trading name of Advanced Business Software and Solutions Limited.
   </div>
+
+</footer>
+
 </div>
 
+
+<!-- SIDE MENU -->
+
+<div class="drawer" id="drawer">
+
+  <button id="close">Close</button>
+
+  <button id="timetableButton">Timetable</button>
+
+  <button id="calendarButton">Calendar</button>
+
+  <button>Settings</button>
+
+</div>
+
+
 <script>
-const events = {
-  "2026-09-21": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-09-24": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-09-29": [["11:00","13:00","Developmental Psychology","Seminar • Room 118"]],
-  "2026-10-01": [["14:00","17:30","Biological Psychology","Workshop • Room 301"]],
-  "2026-10-05": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-10-07": [["10:00","12:00","Research Methods","Seminar • Room 212"]],
-  "2026-10-08": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-10-15": [["14:00","17:30","Biological Psychology","Workshop • Room 301"]],
-  "2026-10-19": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-10-21": [["12:00","14:00","Individual Differences","Seminar • Room 106"]],
-  "2026-10-22": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-10-29": [["14:00","17:30","Biological Psychology","Workshop • Room 301"]],
-  "2026-11-02": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-11-04": [["09:00","11:00","Research Methods","Seminar • Room 212"]],
-  "2026-11-05": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-11-12": [["14:00","17:30","Biological Psychology","Workshop • Room 301"]],
-  "2026-11-16": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-11-18": [["13:00","15:00","Developmental Psychology","Seminar • Room 118"]],
-  "2026-11-19": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-11-26": [["14:00","17:30","Biological Psychology","Workshop • Room 301"]],
-  "2026-11-30": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-12-03": [["14:00","17:30","Biological Psychology","Lecture • Room 301"]],
-  "2026-12-07": [["15:00","17:00","Cognitive Psychology","Lecture • Room 204"]],
-  "2026-12-10": [["14:00","17:30","Biological Psychology","Final workshop • Room 301"]]
+
+/* =====================================================
+   YOUR TIMETABLE
+   ===================================================== */
+
+/*
+   MAIN PATTERN:
+   Monday = 3:00–5:00 PM
+   Thursday = 2:00–5:30 PM
+
+   Extra classes are added occasionally.
+   There are NO classes during the Christmas break.
+*/
+
+const events = [
+
+  /* SEPTEMBER */
+
+  ["2026-09-14","15:00","17:00","Cognitive Psychology"],
+  ["2026-09-17","14:00","17:30","Biological Psychology"],
+
+  ["2026-09-21","15:00","17:00","Cognitive Psychology"],
+  ["2026-09-24","14:00","17:30","Biological Psychology"],
+
+  ["2026-09-29","11:00","12:30","Developmental Psychology"],
+  ["2026-10-01","14:00","17:30","Biological Psychology"],
+
+  /* OCTOBER */
+
+  ["2026-10-05","15:00","17:00","Cognitive Psychology"],
+  ["2026-10-08","14:00","17:30","Biological Psychology"],
+
+  ["2026-10-13","10:00","12:00","Research Methods"],
+  ["2026-10-15","14:00","17:30","Biological Psychology"],
+
+  ["2026-10-19","15:00","17:00","Cognitive Psychology"],
+  ["2026-10-22","14:00","17:30","Biological Psychology"],
+
+  ["2026-10-27","12:00","13:30","Individual Differences"],
+  ["2026-10-29","14:00","17:30","Biological Psychology"],
+
+  /* NOVEMBER */
+
+  ["2026-11-02","15:00","17:00","Cognitive Psychology"],
+  ["2026-11-05","14:00","17:30","Biological Psychology"],
+
+  ["2026-11-10","10:00","12:00","Research Methods"],
+  ["2026-11-12","14:00","17:30","Biological Psychology"],
+
+  ["2026-11-16","15:00","17:00","Cognitive Psychology"],
+  ["2026-11-19","14:00","17:30","Biological Psychology"],
+
+  ["2026-11-24","11:00","13:00","Developmental Psychology"],
+  ["2026-11-26","14:00","17:30","Biological Psychology"],
+
+  ["2026-11-30","15:00","17:00","Cognitive Psychology"],
+
+  /* DECEMBER */
+
+  ["2026-12-03","14:00","17:30","Biological Psychology"],
+
+  ["2026-12-07","15:00","17:00","Cognitive Psychology"],
+
+  ["2026-12-10","14:00","17:30","Biological Psychology"]
+
+  /*
+     NO CLASSES AFTER 10 DECEMBER.
+     CHRISTMAS / WINTER BREAK = EMPTY.
+  */
+
+];
+
+
+/* =====================================================
+   TIMETABLE SETTINGS
+   ===================================================== */
+
+const startHour = 8;
+const endHour = 21;
+const rowHeight = 105;
+
+const schedule = document.getElementById("schedule");
+const scroll = document.getElementById("scroll");
+const dateElement = document.getElementById("date");
+
+const calendarView = document.getElementById("calendarView");
+const calendarTitle = document.getElementById("calendarTitle");
+const calendarContent = document.getElementById("calendarContent");
+
+
+/* =====================================================
+   OPEN ON TODAY'S ACTUAL DATE
+   ===================================================== */
+
+let selectedDate = new Date();
+
+selectedDate.setHours(12,0,0,0);
+
+
+/* =====================================================
+   CALENDAR VIEW
+   ===================================================== */
+
+let calendarMode = "month";
+
+let calendarDate = new Date();
+
+calendarDate.setHours(12,0,0,0);
+
+
+/* =====================================================
+   DATE FUNCTIONS
+   ===================================================== */
+
+function formatDate(date){
+
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      weekday:"short",
+      day:"numeric",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function dateKey(date){
+
+  const year = date.getFullYear();
+
+  const month =
+    String(date.getMonth()+1).padStart(2,"0");
+
+  const day =
+    String(date.getDate()).padStart(2,"0");
+
+  return year + "-" + month + "-" + day;
+
+}
+
+
+/* =====================================================
+   CONVERT TIME TO MINUTES
+   ===================================================== */
+
+function minutes(time){
+
+  if(!time){
+    return 0;
+  }
+
+  const parts = time.split(":");
+
+  return Number(parts[0]) * 60 +
+         Number(parts[1]);
+
+}
+
+
+/* =====================================================
+   BUILD TIMETABLE
+   ===================================================== */
+
+function buildTimetable(){
+
+  schedule.innerHTML = "";
+
+
+  /* HOURS */
+
+  for(let hour = startHour; hour <= endHour; hour++){
+
+    const row = document.createElement("div");
+
+    row.className = "hour";
+
+
+    const time = document.createElement("div");
+
+    time.className = "time";
+
+
+    const shownHour =
+      hour % 12 || 12;
+
+
+    const ampm =
+      hour >= 12 ? "PM" : "AM";
+
+
+    time.innerHTML =
+      shownHour +
+      "<small>" +
+      ampm +
+      "</small>";
+
+
+    const slot =
+      document.createElement("div");
+
+    slot.className = "slot";
+
+
+    row.appendChild(time);
+
+    row.appendChild(slot);
+
+    schedule.appendChild(row);
+
+  }
+
+
+  /* CURRENT DAY */
+
+  const today =
+    dateKey(selectedDate);
+
+
+  const todaysEvents =
+    events.filter(
+      event => event[0] === today
+    );
+
+
+  /* ADD EVENTS */
+
+  todaysEvents.forEach(eventData => {
+
+    const [
+      date,
+      start,
+      end,
+      title
+    ] = eventData;
+
+
+    const event =
+      document.createElement("div");
+
+    event.className = "event";
+
+
+    const startPosition =
+      (minutes(start) -
+      startHour * 60)
+      / 60 *
+      rowHeight;
+
+
+    const duration =
+      (minutes(end) -
+      minutes(start))
+      / 60 *
+      rowHeight;
+
+
+    event.style.top =
+      startPosition + "px";
+
+
+    event.style.height =
+      Math.max(
+        45,
+        duration - 5
+      ) + "px";
+
+
+    event.innerHTML =
+      "<strong>" +
+      title +
+      "</strong>" +
+
+      "<small>" +
+      start +
+      "–" +
+      end +
+      "</small>";
+
+
+    schedule.appendChild(event);
+
+  });
+
+
+  /* UPDATE DATE */
+
+  dateElement.textContent =
+    formatDate(selectedDate);
+
+
+  scroll.scrollTop = 0;
+
+}
+
+
+/* =====================================================
+   DAY NAVIGATION
+   ===================================================== */
+
+function changeDay(amount){
+
+  selectedDate.setDate(
+    selectedDate.getDate() + amount
+  );
+
+  showDay();
+
+}
+
+
+document.getElementById("prev").onclick =
+  () => changeDay(-1);
+
+
+document.getElementById("next").onclick =
+  () => changeDay(1);
+
+
+/* =====================================================
+   TODAY BUTTON
+   ===================================================== */
+
+document.getElementById("today").onclick = () => {
+
+  selectedDate = new Date();
+
+  selectedDate.setHours(12,0,0,0);
+
+  showDay();
+
 };
 
-// Open on the actual date the visitor opens the website.
-let current = new Date();
-current.setHours(12, 0, 0, 0);
 
-function iso(d) {
-  return d.toISOString().slice(0,10);
-}
+/* =====================================================
+   JUMP TO NEXT CLASS
+   ===================================================== */
 
-function formatDate(d) {
-  return d.toLocaleDateString("en-GB", {
-    weekday:"short", day:"numeric", month:"short", year:"numeric"
-  });
-}
+document.getElementById("jump").onclick = () => {
 
-function timeToMinutes(t) {
-  const [h,m] = t.split(":").map(Number);
-  return h*60+m;
-}
+  const today =
+    dateKey(selectedDate);
 
-function render() {
-  const key = iso(current);
-  document.getElementById("dateTitle").textContent = formatDate(current);
-  document.getElementById("datePicker").value = key;
 
-  const area = document.getElementById("events");
-  area.innerHTML = "";
-  const dayEvents = events[key] || [];
+  const firstClass =
+    events.find(
+      event =>
+        event[0] === today &&
+        event[1]
+    );
 
-  // The real Westminster-style day view starts at 8am.
-  const startOfGrid = 8 * 60;
-  const pixelsPerMinute = 135 / 60;
 
-  dayEvents.forEach(([start,end,title,details]) => {
-    const top = (timeToMinutes(start) - startOfGrid) * pixelsPerMinute;
-    const height = (timeToMinutes(end) - timeToMinutes(start)) * pixelsPerMinute;
-    const card = document.createElement("div");
-    card.className = "event";
-    card.style.top = Math.max(0, top) + "px";
-    card.style.height = Math.max(38, height) + "px";
-    card.innerHTML = `<strong>${title}</strong>${start}–${end}<br>${details}`;
-    card.onclick = () => alert(`${title}\\n${start}–${end}\\n${details}`);
-    area.appendChild(card);
-  });
+  if(firstClass){
 
-  document.getElementById("noClass").style.display = dayEvents.length ? "none" : "block";
-}
+    const position =
+      (minutes(firstClass[1]) -
+      startHour * 60)
+      / 60 *
+      rowHeight;
 
-function moveDay(amount) {
-  current.setDate(current.getDate() + amount);
-  render();
-}
 
-function setDate(value) {
-  if (!value) return;
-  current = new Date(value + "T12:00:00");
-  render();
-}
+    scroll.scrollTo({
 
-function openDatePicker() {
-  const picker = document.getElementById("datePicker");
-  if (picker.showPicker) picker.showPicker();
-  else picker.click();
-}
+      top:Math.max(
+        0,
+        position - 100
+      ),
 
-let viewMode = "day";
-let overviewCursor = new Date(current);
-overviewCursor.setHours(12,0,0,0);
+      behavior:"smooth"
 
-function toggleOverviewMenu() {
-  const menu = document.getElementById("overviewMenu");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
+    });
 
-function setView(view) {
-  viewMode = view;
-  document.getElementById("overviewMenu").style.display = "none";
-
-  const grid = document.getElementById("grid");
-  const overview = document.getElementById("overview");
-
-  if (view === "day") {
-    grid.style.display = "block";
-    overview.style.display = "none";
-    document.getElementById("dateTitle").textContent = formatDate(current);
-    return;
   }
 
-  grid.style.display = "none";
-  overview.style.display = "block";
-  overviewCursor = new Date(current);
-  overviewCursor.setHours(12,0,0,0);
-  renderOverview();
-}
-
-function renderOverview() {
-  const title = document.getElementById("overviewTitle");
-  const content = document.getElementById("overviewContent");
-
-  if (viewMode === "month") {
-    const y = overviewCursor.getFullYear();
-    const m = overviewCursor.getMonth();
-    title.textContent = overviewCursor.toLocaleDateString("en-GB", {month:"long", year:"numeric"});
-
-    const first = new Date(y,m,1);
-    const last = new Date(y,m+1,0);
-    const start = (first.getDay() + 6) % 7; // Monday = 0
-    let cells = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
-      .map(d => `<div class="weekday">${d}</div>`).join("");
-
-    for (let i=0; i<start; i++) cells += "<div></div>";
-
-    for (let d=1; d<=last.getDate(); d++) {
-      const date = new Date(y,m,d,12);
-      const key = iso(date);
-      const has = events[key] && events[key].length;
-      const selected = key === iso(current) ? " selected" : "";
-      cells += `<div class="${has ? "has-event" : ""}${selected}" onclick="chooseOverviewDate('${key}')">
-        <strong>${d}</strong>${has ? `<br>${events[key].map(e => e[0]+" "+e[2]).join("<br>")}` : ""}
-      </div>`;
-    }
-
-    content.innerHTML = `<div class="month-grid">${cells}</div>`;
-  }
-
-  if (viewMode === "year") {
-    const y = overviewCursor.getFullYear();
-    title.textContent = String(y);
-    let cells = "";
-    for (let m=0; m<12; m++) {
-      const monthName = new Date(y,m,1).toLocaleDateString("en-GB",{month:"long"});
-      cells += `<div class="year-month" onclick="chooseOverviewMonth(${m})">${monthName}</div>`;
-    }
-    content.innerHTML = `<div class="year-grid">${cells}</div>`;
-  }
-}
-
-function chooseOverviewDate(key) {
-  current = new Date(key + "T12:00:00");
-  setView("day");
-  render();
-}
-
-function chooseOverviewMonth(month) {
-  current = new Date(overviewCursor.getFullYear(), month, 1, 12);
-  overviewCursor = new Date(current);
-  viewMode = "month";
-  renderOverview();
-}
-
-function changeOverview(amount) {
-  if (viewMode === "month") {
-    overviewCursor.setMonth(overviewCursor.getMonth() + amount);
-  } else if (viewMode === "year") {
-    overviewCursor.setFullYear(overviewCursor.getFullYear() + amount);
-  }
-  renderOverview();
-}
-
-// The four-line/menu button opens Day / Month / Year overview options.
-document.querySelector(".toolbar-right .tool-btn").onclick = toggleOverviewMenu;
-
-// Keep the timetable's date title synced when navigating.
-const originalMoveDay = moveDay;
-moveDay = function(amount) {
-  viewMode = "day";
-  document.getElementById("overview").style.display = "none";
-  document.getElementById("grid").style.display = "block";
-  originalMoveDay(amount);
 };
 
-render();
+
+/* =====================================================
+   SIDE MENU
+   ===================================================== */
+
+const drawer =
+  document.getElementById("drawer");
+
+
+document.getElementById("menu").onclick =
+  () => drawer.classList.add("open");
+
+
+document.getElementById("close").onclick =
+  () => drawer.classList.remove("open");
+
+
+/* =====================================================
+   TIMETABLE BUTTON
+   ===================================================== */
+
+document.getElementById("timetableButton").onclick =
+  () => {
+
+    drawer.classList.remove("open");
+
+    showDay();
+
+  };
+
+
+/* =====================================================
+   CALENDAR BUTTON
+   ===================================================== */
+
+document.getElementById("calendarButton").onclick =
+  () => {
+
+    drawer.classList.remove("open");
+
+    calendarMode = "month";
+
+    calendarDate =
+      new Date(selectedDate);
+
+    calendarDate.setHours(12,0,0,0);
+
+    showCalendar();
+
+  };
+
+
+/* =====================================================
+   SHOW DAY
+   ===================================================== */
+
+function showDay(){
+
+  calendarView.style.display = "none";
+
+  scroll.style.display = "block";
+
+  buildTimetable();
+
+}
+
+
+/* =====================================================
+   SHOW CALENDAR
+   ===================================================== */
+
+function showCalendar(){
+
+  scroll.style.display = "none";
+
+  calendarView.style.display = "block";
+
+  renderCalendar();
+
+}
+
+
+/* =====================================================
+   RENDER CALENDAR
+   ===================================================== */
+
+function renderCalendar(){
+
+  calendarContent.innerHTML = "";
+
+
+  /* MONTH VIEW */
+
+  if(calendarMode === "month"){
+
+    const year =
+      calendarDate.getFullYear();
+
+    const month =
+      calendarDate.getMonth();
+
+
+    calendarTitle.textContent =
+      calendarDate.toLocaleDateString(
+        "en-GB",
+        {
+          month:"long",
+          year:"numeric"
+        }
+      );
+
+
+    const firstDay =
+      new Date(year,month,1);
+
+
+    const lastDay =
+      new Date(year,month+1,0);
+
+
+    /*
+      Convert Sunday=0 to
+      Monday=0.
+    */
+
+    let start =
+      firstDay.getDay() - 1;
+
+    if(start < 0){
+      start = 6;
+    }
+
+
+    const grid =
+      document.createElement("div");
+
+    grid.className =
+      "month-grid";
+
+
+    const weekdays =
+      [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ];
+
+
+    weekdays.forEach(day => {
+
+      const cell =
+        document.createElement("div");
+
+      cell.className =
+        "weekday";
+
+      cell.textContent =
+        day;
+
+      grid.appendChild(cell);
+
+    });
+
+
+    /* EMPTY CELLS */
+
+    for(let i=0;i<start;i++){
+
+      grid.appendChild(
+        document.createElement("div")
+      );
+
+    }
+
+
+    /* DAYS */
+
+    for(
+      let day=1;
+      day<=lastDay.getDate();
+      day++
+    ){
+
+      const d =
+        new Date(
+          year,
+          month,
+          day,
+          12
+        );
+
+
+      const key =
+        dateKey(d);
+
+
+      const cell =
+        document.createElement("div");
+
+
+      cell.innerHTML =
+        "<strong>" +
+        day +
+        "</strong>";
+
+
+      if(
+        events.some(
+          event =>
+            event[0] === key
+        )
+      ){
+
+        cell.classList.add(
+          "has-event"
+        );
+
+        const dayEvents =
+          events.filter(
+            event =>
+              event[0] === key
+          );
+
+
+        dayEvents.forEach(event => {
+
+          const small =
+            document.createElement("div");
+
+          small.textContent =
+            event[1] +
+            " " +
+            event[3];
+
+          cell.appendChild(small);
+
+        });
+
+      }
+
+
+      if(
+        key === dateKey(selectedDate)
+      ){
+
+        cell.classList.add(
+          "selected"
+        );
+
+      }
+
+
+      cell.onclick = () => {
+
+        selectedDate =
+          new Date(
+            year,
+            month,
+            day,
+            12
+          );
+
+        showDay();
+
+      };
+
+
+      grid.appendChild(cell);
+
+    }
+
+
+    calendarContent.appendChild(grid);
+
+  }
+
+
+  /* YEAR VIEW */
+
+  if(calendarMode === "year"){
+
+    const year =
+      calendarDate.getFullYear();
+
+
+    calendarTitle.textContent =
+      year;
+
+
+    const grid =
+      document.createElement("div");
+
+    grid.className =
+      "year-grid";
+
+
+    for(
+      let month=0;
+      month<12;
+      month++
+    ){
+
+      const cell =
+        document.createElement("div");
+
+      cell.className =
+        "year-month";
+
+
+      const d =
+        new Date(
+          year,
+          month,
+          1
+        );
+
+
+      cell.textContent =
+        d.toLocaleDateString(
+          "en-GB",
+          {
+            month:"long"
+          }
+        );
+
+
+      cell.onclick = () => {
+
+        calendarDate =
+          new Date(
+            year,
+            month,
+            1,
+            12
+          );
+
+        calendarMode =
+          "month";
+
+        renderCalendar();
+
+      };
+
+
+      grid.appendChild(cell);
+
+    }
+
+
+    calendarContent.appendChild(grid);
+
+  }
+
+
+  /* DAY VIEW */
+
+  if(calendarMode === "day"){
+
+    calendarTitle.textContent =
+      formatDate(calendarDate);
+
+
+    const box =
+      document.createElement("div");
+
+
+    box.style.textAlign =
+      "center";
+
+    box.style.padding =
+      "30px 10px";
+
+
+    const key =
+      dateKey(calendarDate);
+
+
+    const dayEvents =
+      events.filter(
+        event =>
+          event[0] === key
+      );
+
+
+    if(dayEvents.length === 0){
+
+      box.innerHTML =
+        "<strong>No timetabled events</strong>";
+
+    }else{
+
+      dayEvents.forEach(event => {
+
+        const item =
+          document.createElement("div");
+
+        item.style.margin =
+          "10px 0";
+
+        item.style.padding =
+          "12px";
+
+        item.style.background =
+          "#eaf4fd";
+
+        item.style.color =
+          "#236b9f";
+
+        item.innerHTML =
+          "<strong>" +
+          event[3] +
+          "</strong><br>" +
+          event[1] +
+          "–" +
+          event[2];
+
+
+        box.appendChild(item);
+
+      });
+
+    }
+
+
+    calendarContent.appendChild(box);
+
+  }
+
+}
+
+
+/* =====================================================
+   CALENDAR PREVIOUS / NEXT
+   ===================================================== */
+
+document.getElementById("calendarPrev").onclick =
+  () => {
+
+    if(calendarMode === "month"){
+
+      calendarDate.setMonth(
+        calendarDate.getMonth() - 1
+      );
+
+    }
+
+    else if(calendarMode === "year"){
+
+      calendarDate.setFullYear(
+        calendarDate.getFullYear() - 1
+      );
+
+    }
+
+    else if(calendarMode === "day"){
+
+      calendarDate.setDate(
+        calendarDate.getDate() - 1
+      );
+
+    }
+
+    renderCalendar();
+
+  };
+
+
+document.getElementById("calendarNext").onclick =
+  () => {
+
+    if(calendarMode === "month"){
+
+      calendarDate.setMonth(
+        calendarDate.getMonth() + 1
+      );
+
+    }
+
+    else if(calendarMode === "year"){
+
+      calendarDate.setFullYear(
+        calendarDate.getFullYear() + 1
+      );
+
+    }
+
+    else if(calendarMode === "day"){
+
+      calendarDate.setDate(
+        calendarDate.getDate() + 1
+      );
+
+    }
+
+    renderCalendar();
+
+  };
+
+
+/* =====================================================
+   ADD DAY / MONTH / YEAR OPTIONS TO CALENDAR BUTTON
+   ===================================================== */
+
+document.getElementById("calendarButton").onclick =
+  () => {
+
+    drawer.classList.remove("open");
+
+    calendarMode = "month";
+
+    calendarDate =
+      new Date(selectedDate);
+
+    calendarDate.setHours(12,0,0,0);
+
+    showCalendar();
+
+  };
+
+
+/*
+  Clicking the calendar title cycles:
+
+  Month → Year → Day → Month
+
+  This gives easy Day / Month / Year overview.
+*/
+
+calendarTitle.onclick = () => {
+
+  if(calendarMode === "month"){
+
+    calendarMode = "year";
+
+  }
+
+  else if(calendarMode === "year"){
+
+    calendarMode = "day";
+
+  }
+
+  else{
+
+    calendarMode = "month";
+
+  }
+
+  renderCalendar();
+
+};
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+buildTimetable();
+
 </script>
+
 </body>
 </html>
