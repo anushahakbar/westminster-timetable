@@ -159,7 +159,7 @@ header{
 
 .event{
   position:absolute;
-  left:7px;
+  left:62px;
   right:7px;
   border-left:4px solid var(--blue);
   background:#eaf4fd;
@@ -181,6 +181,105 @@ header{
   display:block;
   color:#555;
   margin-top:2px;
+}
+
+/* CALENDAR */
+
+.calendar-wrap{
+  height:calc(100vh - 260px);
+  min-height:520px;
+  overflow:auto;
+  margin:0 10px;
+  border:1px solid var(--border);
+  border-top:0;
+  padding:12px;
+  background:#fff;
+}
+
+.calendar-title{
+  text-align:center;
+  color:var(--blue);
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.calendar-controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+.calendar-controls button{
+  border:1px solid #ccc;
+  background:#f7f7f7;
+  padding:8px 12px;
+  border-radius:4px;
+  cursor:pointer;
+}
+
+.calendar-controls select{
+  border:1px solid #ccc;
+  background:#fff;
+  padding:8px;
+  border-radius:4px;
+}
+
+.calendar{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.calendar th{
+  background:var(--blue);
+  color:white;
+  padding:8px 2px;
+  font-size:12px;
+}
+
+.calendar td{
+  border:1px solid #ddd;
+  height:75px;
+  vertical-align:top;
+  padding:5px;
+  cursor:pointer;
+  background:#fff;
+}
+
+.calendar td:hover{
+  background:#f0f7fd;
+}
+
+.calendar td.empty{
+  background:#f7f7f7;
+  cursor:default;
+}
+
+.calendar td.today{
+  background:#eaf4fd;
+  border:2px solid var(--blue);
+}
+
+.calendar td.has-event{
+  background:#f4faff;
+}
+
+.day-number{
+  font-weight:bold;
+  color:#333;
+}
+
+.day-event{
+  margin-top:5px;
+  padding:3px;
+  background:#eaf4fd;
+  border-left:3px solid var(--blue);
+  color:#236b9f;
+  font-size:10px;
+  line-height:12px;
 }
 
 /* FOOTER */
@@ -223,7 +322,7 @@ header{
   line-height:13px;
 }
 
-/* SIDE MENU */
+/* MENU */
 
 .drawer{
   position:fixed;
@@ -233,10 +332,9 @@ header{
   height:100%;
   background:#fff;
   box-shadow:-3px 0 12px #0003;
-  z-index:20;
+  z-index:10;
   padding:20px;
   transition:.2s;
-  overflow-y:auto;
 }
 
 .drawer.open{
@@ -250,115 +348,6 @@ header{
   border:1px solid #ddd;
   background:#f7f7f7;
   cursor:pointer;
-  font-size:15px;
-}
-
-/* CALENDAR OVERVIEW */
-
-.calendar-view{
-  display:none;
-  margin:0 10px;
-  border:1px solid var(--border);
-  padding:10px;
-  background:white;
-}
-
-.calendar-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  color:var(--blue);
-  font-weight:bold;
-  margin-bottom:10px;
-  font-size:17px;
-}
-
-.calendar-arrow{
-  width:34px!important;
-  height:34px;
-  padding:0!important;
-  margin:0!important;
-  border-radius:50%;
-  background:white!important;
-  color:var(--blue);
-  border:1px solid var(--blue)!important;
-}
-
-.month-grid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:2px;
-}
-
-.month-grid div{
-  min-height:55px;
-  border:1px solid #ddd;
-  padding:5px;
-  font-size:12px;
-  cursor:pointer;
-}
-
-.month-grid .weekday{
-  min-height:28px;
-  background:var(--blue);
-  color:white;
-  text-align:center;
-  font-weight:bold;
-  cursor:default;
-}
-
-.month-grid .has-event{
-  background:#eaf4fd;
-  color:#236b9f;
-  font-weight:bold;
-}
-
-.month-grid .selected{
-  outline:2px solid var(--blue);
-}
-
-.year-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-
-.year-month{
-  min-height:60px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid #ddd;
-  color:var(--blue);
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.year-month:hover,
-.month-grid div:hover{
-  background:#eef6fd;
-}
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-  header{
-    height:72px;
-  }
-
-  .logo{
-    font-size:23px;
-  }
-
-  .schedule-wrap{
-    height:calc(100vh - 250px);
-  }
-
-  .year-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
 }
 </style>
 </head>
@@ -397,8 +386,6 @@ header{
 <div class="datebar" id="date"></div>
 
 
-<!-- NORMAL DAY VIEW -->
-
 <div class="schedule-wrap" id="scroll">
 
   <div class="schedule" id="schedule"></div>
@@ -406,21 +393,41 @@ header{
 </div>
 
 
-<!-- CALENDAR OVERVIEW -->
+<div class="calendar-wrap" id="calendarWrap" style="display:none;">
 
-<div class="calendar-view" id="calendarView">
+  <div class="calendar-title" id="calendarTitle"></div>
 
-  <div class="calendar-header">
+  <div class="calendar-controls">
 
-    <button class="calendar-arrow" id="calendarPrev">←</button>
+    <button id="calendarPrev">←</button>
 
-    <span id="calendarTitle"></span>
+    <select id="calendarDay"></select>
 
-    <button class="calendar-arrow" id="calendarNext">→</button>
+    <select id="calendarMonth"></select>
+
+    <select id="calendarYear"></select>
+
+    <button id="calendarNext">→</button>
 
   </div>
 
-  <div id="calendarContent"></div>
+  <table class="calendar">
+
+    <thead>
+      <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+      </tr>
+    </thead>
+
+    <tbody id="calendarBody"></tbody>
+
+  </table>
 
 </div>
 
@@ -472,112 +479,181 @@ header{
 <script>
 
 /* =====================================================
-   YOUR TIMETABLE
-   ===================================================== */
-
-/*
+   TIMETABLE
    MAIN PATTERN:
-   Monday = 3:00–5:00 PM
-   Thursday = 2:00–5:30 PM
+   MONDAY  3:00 PM - 5:00 PM
+   THURSDAY 2:00 PM - 5:30 PM
 
-   Extra classes are added occasionally.
-   There are NO classes during the Christmas break.
-*/
+   EXTRA RANDOM SESSIONS ARE INCLUDED.
+   CHRISTMAS / HOLIDAY PERIODS ARE LEFT EMPTY.
+   ===================================================== */
 
 const events = [
 
-  /* SEPTEMBER */
+  /* SEPTEMBER 2026 */
 
-  ["2026-09-14","15:00","17:00","Cognitive Psychology"],
-  ["2026-09-17","14:00","17:30","Biological Psychology"],
+  ["2026-09-14","15:00","17:00","Lecture"],
+  ["2026-09-17","14:00","17:30","Seminar"],
 
-  ["2026-09-21","15:00","17:00","Cognitive Psychology"],
-  ["2026-09-24","14:00","17:30","Biological Psychology"],
+  ["2026-09-21","15:00","17:00","Lecture"],
+  ["2026-09-24","14:00","17:30","Seminar"],
 
-  ["2026-09-29","11:00","12:30","Developmental Psychology"],
-  ["2026-10-01","14:00","17:30","Biological Psychology"],
+  ["2026-09-28","15:00","17:00","Lecture"],
+  ["2026-10-01","14:00","17:30","Seminar"],
 
-  /* OCTOBER */
+  ["2026-09-30","11:00","12:00","Tutorial"],
 
-  ["2026-10-05","15:00","17:00","Cognitive Psychology"],
-  ["2026-10-08","14:00","17:30","Biological Psychology"],
 
-  ["2026-10-13","10:00","12:00","Research Methods"],
-  ["2026-10-15","14:00","17:30","Biological Psychology"],
+  /* OCTOBER 2026 */
 
-  ["2026-10-19","15:00","17:00","Cognitive Psychology"],
-  ["2026-10-22","14:00","17:30","Biological Psychology"],
+  ["2026-10-05","15:00","17:00","Lecture"],
+  ["2026-10-08","14:00","17:30","Seminar"],
 
-  ["2026-10-27","12:00","13:30","Individual Differences"],
-  ["2026-10-29","14:00","17:30","Biological Psychology"],
+  ["2026-10-12","15:00","17:00","Lecture"],
+  ["2026-10-15","14:00","17:30","Seminar"],
 
-  /* NOVEMBER */
+  ["2026-10-19","15:00","17:00","Lecture"],
+  ["2026-10-22","14:00","17:30","Seminar"],
 
-  ["2026-11-02","15:00","17:00","Cognitive Psychology"],
-  ["2026-11-05","14:00","17:30","Biological Psychology"],
+  ["2026-10-26","15:00","17:00","Lecture"],
+  ["2026-10-29","14:00","17:30","Seminar"],
 
-  ["2026-11-10","10:00","12:00","Research Methods"],
-  ["2026-11-12","14:00","17:30","Biological Psychology"],
+  ["2026-10-07","10:00","11:00","Workshop"],
+  ["2026-10-20","12:00","13:00","Tutorial"],
 
-  ["2026-11-16","15:00","17:00","Cognitive Psychology"],
-  ["2026-11-19","14:00","17:30","Biological Psychology"],
 
-  ["2026-11-24","11:00","13:00","Developmental Psychology"],
-  ["2026-11-26","14:00","17:30","Biological Psychology"],
+  /* NOVEMBER 2026 */
 
-  ["2026-11-30","15:00","17:00","Cognitive Psychology"],
+  ["2026-11-02","15:00","17:00","Lecture"],
+  ["2026-11-05","14:00","17:30","Seminar"],
 
-  /* DECEMBER */
+  ["2026-11-09","15:00","17:00","Lecture"],
+  ["2026-11-12","14:00","17:30","Seminar"],
 
-  ["2026-12-03","14:00","17:30","Biological Psychology"],
+  ["2026-11-16","15:00","17:00","Lecture"],
+  ["2026-11-19","14:00","17:30","Seminar"],
 
-  ["2026-12-07","15:00","17:00","Cognitive Psychology"],
+  ["2026-11-23","15:00","17:00","Lecture"],
+  ["2026-11-26","14:00","17:30","Seminar"],
 
-  ["2026-12-10","14:00","17:30","Biological Psychology"]
+  ["2026-11-30","15:00","17:00","Lecture"],
 
-  /*
-     NO CLASSES AFTER 10 DECEMBER.
-     CHRISTMAS / WINTER BREAK = EMPTY.
+  ["2026-11-04","11:00","12:30","Workshop"],
+  ["2026-11-18","12:00","13:00","Tutorial"],
+
+
+  /* DECEMBER 2026 */
+
+  ["2026-12-03","14:00","17:30","Seminar"],
+
+  ["2026-12-07","15:00","17:00","Lecture"],
+  ["2026-12-10","14:00","17:30","Seminar"],
+
+  ["2026-12-14","15:00","17:00","Lecture"],
+  ["2026-12-17","14:00","17:30","Seminar"],
+
+  ["2026-12-09","11:00","12:00","Revision Session"],
+
+
+  /* CHRISTMAS / WINTER HOLIDAY
+     NO CLASSES
   */
+
+
+  /* JANUARY 2027 */
+
+  ["2027-01-11","15:00","17:00","Lecture"],
+  ["2027-01-14","14:00","17:30","Seminar"],
+
+  ["2027-01-18","15:00","17:00","Lecture"],
+  ["2027-01-21","14:00","17:30","Seminar"],
+
+  ["2027-01-25","15:00","17:00","Lecture"],
+  ["2027-01-28","14:00","17:30","Seminar"],
+
+  ["2027-01-13","12:00","13:00","Tutorial"],
+
+
+  /* FEBRUARY 2027 */
+
+  ["2027-02-01","15:00","17:00","Lecture"],
+  ["2027-02-04","14:00","17:30","Seminar"],
+
+  ["2027-02-08","15:00","17:00","Lecture"],
+  ["2027-02-11","14:00","17:30","Seminar"],
+
+  ["2027-02-15","15:00","17:00","Lecture"],
+  ["2027-02-18","14:00","17:30","Seminar"],
+
+  ["2027-02-22","15:00","17:00","Lecture"],
+  ["2027-02-25","14:00","17:30","Seminar"],
+
+  ["2027-02-03","10:00","11:00","Workshop"],
+
+
+  /* MARCH 2027 */
+
+  ["2027-03-01","15:00","17:00","Lecture"],
+  ["2027-03-04","14:00","17:30","Seminar"],
+
+  ["2027-03-08","15:00","17:00","Lecture"],
+  ["2027-03-11","14:00","17:30","Seminar"],
+
+  ["2027-03-15","15:00","17:00","Lecture"],
+  ["2027-03-18","14:00","17:30","Seminar"],
+
+  ["2027-03-22","15:00","17:00","Lecture"],
+  ["2027-03-25","14:00","17:30","Seminar"],
+
+  ["2027-03-29","15:00","17:00","Lecture"],
+  ["2027-04-01","14:00","17:30","Seminar"],
+
+  ["2027-03-17","12:00","13:00","Tutorial"]
 
 ];
 
 
 /* =====================================================
-   TIMETABLE SETTINGS
+   SETTINGS
    ===================================================== */
 
 const startHour = 8;
 const endHour = 21;
 const rowHeight = 105;
 
-const schedule = document.getElementById("schedule");
-const scroll = document.getElementById("scroll");
-const dateElement = document.getElementById("date");
+const schedule =
+  document.getElementById("schedule");
 
-const calendarView = document.getElementById("calendarView");
-const calendarTitle = document.getElementById("calendarTitle");
-const calendarContent = document.getElementById("calendarContent");
+const scroll =
+  document.getElementById("scroll");
 
+const dateElement =
+  document.getElementById("date");
 
-/* =====================================================
-   OPEN ON TODAY'S ACTUAL DATE
-   ===================================================== */
-
-let selectedDate = new Date();
-
-selectedDate.setHours(12,0,0,0);
+const calendarWrap =
+  document.getElementById("calendarWrap");
 
 
 /* =====================================================
-   CALENDAR VIEW
+   OPEN ON TODAY'S REAL DATE
    ===================================================== */
 
-let calendarMode = "month";
+const now = new Date();
 
-let calendarDate = new Date();
+let selectedDate =
+  new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    12
+  );
 
-calendarDate.setHours(12,0,0,0);
+let calendarDate =
+  new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    1
+  );
 
 
 /* =====================================================
@@ -601,7 +677,8 @@ function formatDate(date){
 
 function dateKey(date){
 
-  const year = date.getFullYear();
+  const year =
+    date.getFullYear();
 
   const month =
     String(date.getMonth()+1).padStart(2,"0");
@@ -615,7 +692,7 @@ function dateKey(date){
 
 
 /* =====================================================
-   CONVERT TIME TO MINUTES
+   TIME
    ===================================================== */
 
 function minutes(time){
@@ -624,10 +701,13 @@ function minutes(time){
     return 0;
   }
 
-  const parts = time.split(":");
+  const parts =
+    time.split(":");
 
-  return Number(parts[0]) * 60 +
-         Number(parts[1]);
+  return (
+    Number(parts[0]) * 60 +
+    Number(parts[1])
+  );
 
 }
 
@@ -640,24 +720,32 @@ function buildTimetable(){
 
   schedule.innerHTML = "";
 
+  calendarWrap.style.display = "none";
+  scroll.style.display = "block";
+
 
   /* HOURS */
 
-  for(let hour = startHour; hour <= endHour; hour++){
+  for(
+    let hour = startHour;
+    hour <= endHour;
+    hour++
+  ){
 
-    const row = document.createElement("div");
+    const row =
+      document.createElement("div");
 
     row.className = "hour";
 
 
-    const time = document.createElement("div");
+    const time =
+      document.createElement("div");
 
     time.className = "time";
 
 
     const shownHour =
       hour % 12 || 12;
-
 
     const ampm =
       hour >= 12 ? "PM" : "AM";
@@ -685,11 +773,10 @@ function buildTimetable(){
   }
 
 
-  /* CURRENT DAY */
+  /* TODAY'S EVENTS */
 
   const today =
     dateKey(selectedDate);
-
 
   const todaysEvents =
     events.filter(
@@ -697,7 +784,7 @@ function buildTimetable(){
     );
 
 
-  /* ADD EVENTS */
+  /* EVENTS */
 
   todaysEvents.forEach(eventData => {
 
@@ -715,49 +802,68 @@ function buildTimetable(){
     event.className = "event";
 
 
-    const startPosition =
-      (minutes(start) -
-      startHour * 60)
-      / 60 *
-      rowHeight;
+    if(!start){
+
+      event.style.top = "8px";
+
+      event.style.minHeight = "42px";
+
+      event.innerHTML =
+        "<strong>" +
+        title +
+        "</strong>";
+
+    }
+
+    else{
+
+      const startPosition =
+        (
+          minutes(start) -
+          startHour * 60
+        )
+        / 60 *
+        rowHeight;
 
 
-    const duration =
-      (minutes(end) -
-      minutes(start))
-      / 60 *
-      rowHeight;
+      const duration =
+        (
+          minutes(end) -
+          minutes(start)
+        )
+        / 60 *
+        rowHeight;
 
 
-    event.style.top =
-      startPosition + "px";
+      event.style.top =
+        startPosition + "px";
 
 
-    event.style.height =
-      Math.max(
-        45,
-        duration - 5
-      ) + "px";
+      event.style.height =
+        Math.max(
+          45,
+          duration - 5
+        ) + "px";
 
 
-    event.innerHTML =
-      "<strong>" +
-      title +
-      "</strong>" +
+      event.innerHTML =
+        "<strong>" +
+        title +
+        "</strong>" +
 
-      "<small>" +
-      start +
-      "–" +
-      end +
-      "</small>";
+        "<small>" +
+        start +
+        "–" +
+        end +
+        "</small>";
+
+    }
 
 
     schedule.appendChild(event);
 
   });
 
-
-  /* UPDATE DATE */
 
   dateElement.textContent =
     formatDate(selectedDate);
@@ -769,7 +875,7 @@ function buildTimetable(){
 
 
 /* =====================================================
-   DAY NAVIGATION
+   PREVIOUS / NEXT
    ===================================================== */
 
 function changeDay(amount){
@@ -778,7 +884,7 @@ function changeDay(amount){
     selectedDate.getDate() + amount
   );
 
-  showDay();
+  buildTimetable();
 
 }
 
@@ -797,24 +903,30 @@ document.getElementById("next").onclick =
 
 document.getElementById("today").onclick = () => {
 
-  selectedDate = new Date();
+  const now =
+    new Date();
 
-  selectedDate.setHours(12,0,0,0);
+  selectedDate =
+    new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      12
+    );
 
-  showDay();
+  buildTimetable();
 
 };
 
 
 /* =====================================================
-   JUMP TO NEXT CLASS
+   JUMP TO CLASS
    ===================================================== */
 
 document.getElementById("jump").onclick = () => {
 
   const today =
     dateKey(selectedDate);
-
 
   const firstClass =
     events.find(
@@ -827,8 +939,10 @@ document.getElementById("jump").onclick = () => {
   if(firstClass){
 
     const position =
-      (minutes(firstClass[1]) -
-      startHour * 60)
+      (
+        minutes(firstClass[1]) -
+        startHour * 60
+      )
       / 60 *
       rowHeight;
 
@@ -850,192 +964,299 @@ document.getElementById("jump").onclick = () => {
 
 
 /* =====================================================
-   SIDE MENU
+   CALENDAR
    ===================================================== */
 
-const drawer =
-  document.getElementById("drawer");
+const calendarBody =
+  document.getElementById("calendarBody");
+
+const calendarTitle =
+  document.getElementById("calendarTitle");
+
+const calendarDay =
+  document.getElementById("calendarDay");
+
+const calendarMonth =
+  document.getElementById("calendarMonth");
+
+const calendarYear =
+  document.getElementById("calendarYear");
 
 
-document.getElementById("menu").onclick =
-  () => drawer.classList.add("open");
+const monthNames = [
+
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+
+];
 
 
-document.getElementById("close").onclick =
-  () => drawer.classList.remove("open");
+/* DAY */
 
+for(
+  let day = 1;
+  day <= 31;
+  day++
+){
 
-/* =====================================================
-   TIMETABLE BUTTON
-   ===================================================== */
+  const option =
+    document.createElement("option");
 
-document.getElementById("timetableButton").onclick =
-  () => {
+  option.value = day;
 
-    drawer.classList.remove("open");
+  option.textContent = day;
 
-    showDay();
-
-  };
-
-
-/* =====================================================
-   CALENDAR BUTTON
-   ===================================================== */
-
-document.getElementById("calendarButton").onclick =
-  () => {
-
-    drawer.classList.remove("open");
-
-    calendarMode = "month";
-
-    calendarDate =
-      new Date(selectedDate);
-
-    calendarDate.setHours(12,0,0,0);
-
-    showCalendar();
-
-  };
-
-
-/* =====================================================
-   SHOW DAY
-   ===================================================== */
-
-function showDay(){
-
-  calendarView.style.display = "none";
-
-  scroll.style.display = "block";
-
-  buildTimetable();
+  calendarDay.appendChild(option);
 
 }
 
 
-/* =====================================================
-   SHOW CALENDAR
-   ===================================================== */
+/* MONTH */
 
-function showCalendar(){
+monthNames.forEach(
+  (month,index) => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = index;
+
+    option.textContent = month;
+
+    calendarMonth.appendChild(option);
+
+  }
+);
+
+
+/* YEAR */
+
+for(
+  let year = 2026;
+  year <= 2027;
+  year++
+){
+
+  const option =
+    document.createElement("option");
+
+  option.value = year;
+
+  option.textContent = year;
+
+  calendarYear.appendChild(option);
+
+}
+
+
+/* OPEN CALENDAR */
+
+function openCalendar(){
+
+  calendarDate =
+    new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      1
+    );
 
   scroll.style.display = "none";
 
-  calendarView.style.display = "block";
+  calendarWrap.style.display = "block";
 
-  renderCalendar();
+  buildCalendar();
 
 }
 
 
-/* =====================================================
-   RENDER CALENDAR
-   ===================================================== */
+/* BUILD CALENDAR */
 
-function renderCalendar(){
+function buildCalendar(){
 
-  calendarContent.innerHTML = "";
+  const year =
+    calendarDate.getFullYear();
 
-
-  /* MONTH VIEW */
-
-  if(calendarMode === "month"){
-
-    const year =
-      calendarDate.getFullYear();
-
-    const month =
-      calendarDate.getMonth();
+  const month =
+    calendarDate.getMonth();
 
 
-    calendarTitle.textContent =
-      calendarDate.toLocaleDateString(
-        "en-GB",
-        {
-          month:"long",
-          year:"numeric"
+  calendarTitle.textContent =
+    monthNames[month] +
+    " " +
+    year;
+
+
+  calendarDay.value =
+    selectedDate.getDate();
+
+  calendarMonth.value =
+    month;
+
+  calendarYear.value =
+    year;
+
+
+  calendarBody.innerHTML = "";
+
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  let startDay =
+    firstDay.getDay();
+
+
+  /* MONDAY = FIRST DAY */
+
+  startDay =
+    startDay === 0
+      ? 6
+      : startDay - 1;
+
+
+  const daysInMonth =
+    new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+
+  let row =
+    document.createElement("tr");
+
+
+  /* EMPTY CELLS */
+
+  for(
+    let i = 0;
+    i < startDay;
+    i++
+  ){
+
+    const cell =
+      document.createElement("td");
+
+    cell.className = "empty";
+
+    row.appendChild(cell);
+
+  }
+
+
+  /* DAYS */
+
+  for(
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ){
+
+    if(row.children.length === 7){
+
+      calendarBody.appendChild(row);
+
+      row =
+        document.createElement("tr");
+
+    }
+
+
+    const cell =
+      document.createElement("td");
+
+
+    const key =
+      year +
+      "-" +
+      String(month + 1).padStart(2,"0") +
+      "-" +
+      String(day).padStart(2,"0");
+
+
+    const dayNumber =
+      document.createElement("div");
+
+    dayNumber.className =
+      "day-number";
+
+    dayNumber.textContent =
+      day;
+
+
+    cell.appendChild(dayNumber);
+
+
+    /* REAL TODAY */
+
+    const realToday =
+      new Date();
+
+
+    if(
+      day === realToday.getDate() &&
+      month === realToday.getMonth() &&
+      year === realToday.getFullYear()
+    ){
+
+      cell.classList.add("today");
+
+    }
+
+
+    /* EVENTS */
+
+    const dayEvents =
+      events.filter(
+        event => event[0] === key
+      );
+
+
+    if(dayEvents.length){
+
+      cell.classList.add("has-event");
+
+
+      dayEvents.forEach(
+        eventData => {
+
+          const event =
+            document.createElement("div");
+
+          event.className =
+            "day-event";
+
+          event.textContent =
+            eventData[3];
+
+          cell.appendChild(event);
+
         }
       );
 
-
-    const firstDay =
-      new Date(year,month,1);
-
-
-    const lastDay =
-      new Date(year,month+1,0);
-
-
-    /*
-      Convert Sunday=0 to
-      Monday=0.
-    */
-
-    let start =
-      firstDay.getDay() - 1;
-
-    if(start < 0){
-      start = 6;
     }
 
 
-    const grid =
-      document.createElement("div");
+    /* CLICK DATE */
 
-    grid.className =
-      "month-grid";
+    cell.onclick = () => {
 
-
-    const weekdays =
-      [
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri",
-        "Sat",
-        "Sun"
-      ];
-
-
-    weekdays.forEach(day => {
-
-      const cell =
-        document.createElement("div");
-
-      cell.className =
-        "weekday";
-
-      cell.textContent =
-        day;
-
-      grid.appendChild(cell);
-
-    });
-
-
-    /* EMPTY CELLS */
-
-    for(let i=0;i<start;i++){
-
-      grid.appendChild(
-        document.createElement("div")
-      );
-
-    }
-
-
-    /* DAYS */
-
-    for(
-      let day=1;
-      day<=lastDay.getDate();
-      day++
-    ){
-
-      const d =
+      selectedDate =
         new Date(
           year,
           month,
@@ -1043,278 +1264,50 @@ function renderCalendar(){
           12
         );
 
+      buildTimetable();
 
-      const key =
-        dateKey(d);
-
-
-      const cell =
-        document.createElement("div");
+    };
 
 
-      cell.innerHTML =
-        "<strong>" +
-        day +
-        "</strong>";
-
-
-      if(
-        events.some(
-          event =>
-            event[0] === key
-        )
-      ){
-
-        cell.classList.add(
-          "has-event"
-        );
-
-        const dayEvents =
-          events.filter(
-            event =>
-              event[0] === key
-          );
-
-
-        dayEvents.forEach(event => {
-
-          const small =
-            document.createElement("div");
-
-          small.textContent =
-            event[1] +
-            " " +
-            event[3];
-
-          cell.appendChild(small);
-
-        });
-
-      }
-
-
-      if(
-        key === dateKey(selectedDate)
-      ){
-
-        cell.classList.add(
-          "selected"
-        );
-
-      }
-
-
-      cell.onclick = () => {
-
-        selectedDate =
-          new Date(
-            year,
-            month,
-            day,
-            12
-          );
-
-        showDay();
-
-      };
-
-
-      grid.appendChild(cell);
-
-    }
-
-
-    calendarContent.appendChild(grid);
+    row.appendChild(cell);
 
   }
 
 
-  /* YEAR VIEW */
+  /* FINISH LAST ROW */
 
-  if(calendarMode === "year"){
+  while(
+    row.children.length < 7
+  ){
 
-    const year =
-      calendarDate.getFullYear();
+    const cell =
+      document.createElement("td");
 
+    cell.className =
+      "empty";
 
-    calendarTitle.textContent =
-      year;
-
-
-    const grid =
-      document.createElement("div");
-
-    grid.className =
-      "year-grid";
-
-
-    for(
-      let month=0;
-      month<12;
-      month++
-    ){
-
-      const cell =
-        document.createElement("div");
-
-      cell.className =
-        "year-month";
-
-
-      const d =
-        new Date(
-          year,
-          month,
-          1
-        );
-
-
-      cell.textContent =
-        d.toLocaleDateString(
-          "en-GB",
-          {
-            month:"long"
-          }
-        );
-
-
-      cell.onclick = () => {
-
-        calendarDate =
-          new Date(
-            year,
-            month,
-            1,
-            12
-          );
-
-        calendarMode =
-          "month";
-
-        renderCalendar();
-
-      };
-
-
-      grid.appendChild(cell);
-
-    }
-
-
-    calendarContent.appendChild(grid);
+    row.appendChild(cell);
 
   }
 
 
-  /* DAY VIEW */
-
-  if(calendarMode === "day"){
-
-    calendarTitle.textContent =
-      formatDate(calendarDate);
-
-
-    const box =
-      document.createElement("div");
-
-
-    box.style.textAlign =
-      "center";
-
-    box.style.padding =
-      "30px 10px";
-
-
-    const key =
-      dateKey(calendarDate);
-
-
-    const dayEvents =
-      events.filter(
-        event =>
-          event[0] === key
-      );
-
-
-    if(dayEvents.length === 0){
-
-      box.innerHTML =
-        "<strong>No timetabled events</strong>";
-
-    }else{
-
-      dayEvents.forEach(event => {
-
-        const item =
-          document.createElement("div");
-
-        item.style.margin =
-          "10px 0";
-
-        item.style.padding =
-          "12px";
-
-        item.style.background =
-          "#eaf4fd";
-
-        item.style.color =
-          "#236b9f";
-
-        item.innerHTML =
-          "<strong>" +
-          event[3] +
-          "</strong><br>" +
-          event[1] +
-          "–" +
-          event[2];
-
-
-        box.appendChild(item);
-
-      });
-
-    }
-
-
-    calendarContent.appendChild(box);
-
-  }
+  calendarBody.appendChild(row);
 
 }
 
 
 /* =====================================================
-   CALENDAR PREVIOUS / NEXT
+   CALENDAR ARROWS
    ===================================================== */
 
 document.getElementById("calendarPrev").onclick =
   () => {
 
-    if(calendarMode === "month"){
+    calendarDate.setMonth(
+      calendarDate.getMonth() - 1
+    );
 
-      calendarDate.setMonth(
-        calendarDate.getMonth() - 1
-      );
-
-    }
-
-    else if(calendarMode === "year"){
-
-      calendarDate.setFullYear(
-        calendarDate.getFullYear() - 1
-      );
-
-    }
-
-    else if(calendarMode === "day"){
-
-      calendarDate.setDate(
-        calendarDate.getDate() - 1
-      );
-
-    }
-
-    renderCalendar();
+    buildCalendar();
 
   };
 
@@ -1322,87 +1315,126 @@ document.getElementById("calendarPrev").onclick =
 document.getElementById("calendarNext").onclick =
   () => {
 
-    if(calendarMode === "month"){
+    calendarDate.setMonth(
+      calendarDate.getMonth() + 1
+    );
 
-      calendarDate.setMonth(
-        calendarDate.getMonth() + 1
-      );
-
-    }
-
-    else if(calendarMode === "year"){
-
-      calendarDate.setFullYear(
-        calendarDate.getFullYear() + 1
-      );
-
-    }
-
-    else if(calendarMode === "day"){
-
-      calendarDate.setDate(
-        calendarDate.getDate() + 1
-      );
-
-    }
-
-    renderCalendar();
+    buildCalendar();
 
   };
 
 
 /* =====================================================
-   ADD DAY / MONTH / YEAR OPTIONS TO CALENDAR BUTTON
+   DAY / MONTH / YEAR SELECTORS
    ===================================================== */
+
+function calendarSelectionChanged(){
+
+  const year =
+    Number(calendarYear.value);
+
+  const month =
+    Number(calendarMonth.value);
+
+  let day =
+    Number(calendarDay.value);
+
+
+  const maxDay =
+    new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+
+  if(day > maxDay){
+
+    day = maxDay;
+
+    calendarDay.value = day;
+
+  }
+
+
+  calendarDate =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  selectedDate =
+    new Date(
+      year,
+      month,
+      day,
+      12
+    );
+
+
+  buildCalendar();
+
+}
+
+
+calendarDay.onchange =
+  calendarSelectionChanged;
+
+calendarMonth.onchange =
+  calendarSelectionChanged;
+
+calendarYear.onchange =
+  calendarSelectionChanged;
+
+
+/* =====================================================
+   MENU
+   ===================================================== */
+
+const drawer =
+  document.getElementById("drawer");
+
+
+document.getElementById("menu").onclick =
+  () => {
+
+    drawer.classList.add("open");
+
+  };
+
+
+document.getElementById("close").onclick =
+  () => {
+
+    drawer.classList.remove("open");
+
+  };
+
+
+/* TIMETABLE BUTTON */
+
+document.getElementById("timetableButton").onclick =
+  () => {
+
+    drawer.classList.remove("open");
+
+    buildTimetable();
+
+  };
+
+
+/* CALENDAR BUTTON */
 
 document.getElementById("calendarButton").onclick =
   () => {
 
     drawer.classList.remove("open");
 
-    calendarMode = "month";
-
-    calendarDate =
-      new Date(selectedDate);
-
-    calendarDate.setHours(12,0,0,0);
-
-    showCalendar();
+    openCalendar();
 
   };
-
-
-/*
-  Clicking the calendar title cycles:
-
-  Month → Year → Day → Month
-
-  This gives easy Day / Month / Year overview.
-*/
-
-calendarTitle.onclick = () => {
-
-  if(calendarMode === "month"){
-
-    calendarMode = "year";
-
-  }
-
-  else if(calendarMode === "year"){
-
-    calendarMode = "day";
-
-  }
-
-  else{
-
-    calendarMode = "month";
-
-  }
-
-  renderCalendar();
-
-};
 
 
 /* =====================================================
