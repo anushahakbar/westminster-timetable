@@ -2,1957 +2,1566 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>University of Westminster Timetable</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #333;
-    background: #fff;
-}
-
-:root {
-    --blue: #438fd1;
-    --dark-blue: #327fbe;
-    --border: #d4d4d4;
-}
-
-button {
-    font-family: inherit;
-}
+*{box-sizing:border-box}
 
-button:focus-visible {
-    outline: 3px solid #1d5f94;
-    outline-offset: 2px;
+body{
+  margin:0;
+  background:#fff;
+  color:#333;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    height: 92px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 18px;
-    border-bottom: 1px solid #ddd;
-}
-
-.logo {
-    font-size: clamp(25px, 4vw, 38px);
-    font-weight: 800;
-    line-height: .84;
-    letter-spacing: -2px;
-    color: #292929;
+:root{
+  --blue:#3d91d6;
+  --dark:#287dbf;
+  --line:#d0d0d0;
 }
 
-.logo span {
-    font-size: 18px;
-    margin-left: 3px;
-    vertical-align: middle;
+.header{
+  height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 22px;
+  border-bottom:1px solid #ddd;
 }
 
-.menu-btn {
-    width: 49px;
-    height: 49px;
-    border: 0;
-    border-radius: 5px;
-    background: var(--blue);
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
+.logo{
+  font-weight:800;
+  color:#111;
+  font-size:29px;
+  line-height:.86;
+  letter-spacing:-1.5px;
 }
 
-.menu-btn:hover {
-    background: var(--dark-blue);
+.logo small{
+  font-size:18px;
 }
 
-/* =========================
-   BLUE TOOLBAR
-========================= */
-
-.toolbar {
-    height: 59px;
-    background: var(--blue);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 12px;
+.menu{
+  width:50px;
+  height:50px;
+  border:0;
+  border-radius:5px;
+  background:var(--blue);
+  color:#fff;
+  font-size:29px;
+  cursor:pointer;
 }
 
-.toolbar-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.app{
+  max-width:1000px;
+  margin:14px auto 0;
+  padding:0 12px;
 }
 
-.tool-btn {
-    width: 39px;
-    height: 39px;
-    border-radius: 50%;
-    border: 2px solid white;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 21px;
-    transition: .15s;
+.toolbar{
+  display:flex;
+  gap:7px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:12px;
 }
 
-.tool-btn:hover,
-.tool-btn.active {
-    background: rgba(255,255,255,.2);
+.btn{
+  padding:9px 15px;
+  border:1px solid #ccc;
+  background:#fff;
+  border-radius:4px;
+  color:#287dbf;
+  font-weight:700;
+  cursor:pointer;
 }
 
-/* =========================
-   DATE BAR
-========================= */
-
-.date-bar {
-    height: 50px;
-    border: 1px solid var(--border);
-    border-top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.btn.active{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--blue);
+}
+
+.today{
+  margin-left:auto;
+  color:#555;
+}
+
+.box{
+  border:1px solid #ccc;
+  border-radius:5px;
+  overflow:hidden;
+  box-shadow:0 1px 3px #ddd;
+  background:#fff;
 }
-
-.date-title {
-    border: 0;
-    background: transparent;
-    color: var(--blue);
-    font-weight: bold;
-    font-size: 18px;
-    cursor: pointer;
+
+.bluebar{
+  height:58px;
+  background:var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
 }
 
-.today-btn {
-    position: absolute;
-    right: 12px;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 4px;
-    padding: 6px 10px;
-    cursor: pointer;
+.side{
+  display:flex;
+  gap:17px;
 }
 
-.today-btn:hover {
-    background: #f4f4f4;
+.circle{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  border:1.5px solid #fff;
+  background:transparent;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
 }
 
-/* =========================
-   DAY TIMETABLE
-========================= */
-
-.timetable {
-    display: grid;
-    grid-template-columns: 72px 1fr;
-    height: 780px;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    overflow: hidden;
+.circle.small{
+  font-size:19px;
 }
 
-.times {
-    background: #fafafa;
-    border-right: 1px solid #bbb;
+.datebar{
+  height:42px;
+  border-bottom:1px solid #ccc;
+  text-align:center;
+  padding:10px;
+  color:#358bd0;
+  font-weight:700;
+  font-size:18px;
 }
 
-.time-row {
-    height: 60px;
-    border-bottom: 1px solid #d8d8d8;
-    position: relative;
+.daygrid{
+  display:grid;
+  grid-template-columns:68px 1fr;
+  min-height:720px;
 }
 
-.time-label {
-    position: absolute;
-    top: 7px;
-    right: 8px;
-    color: var(--blue);
-    font-size: 14px;
-    font-weight: bold;
+.times{
+  border-right:1px solid #c9c9c9;
 }
 
-.timeline {
-    position: relative;
-    overflow: hidden;
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            white 0px,
-            white 29px,
-            #eeeeee 30px
-        );
+.time{
+  height:120px;
+  border-bottom:1px solid #d0d0d0;
+  text-align:right;
+  padding:10px 7px;
+  color:#358bd0;
+  font-weight:700;
 }
 
-.hour-line {
-    height: 60px;
-    border-bottom: 1px solid #d4d4d4;
+.hours{
+  position:relative;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 29px,
+      #eee 30px,
+      transparent 31px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 119px,
+      #d0d0d0 120px
+    );
 }
-
-/* =========================
-   EVENTS
-========================= */
 
-.event {
-    position: absolute;
-    left: 7px;
-    right: 7px;
-    border-radius: 3px;
-    padding: 7px 10px;
-    cursor: pointer;
-    text-align: left;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0,0,0,.1);
-    transition: .15s;
-    border: 1px solid rgba(255,255,255,.8);
-    border-left-width: 5px;
+.event{
+  position:absolute;
+  left:7px;
+  right:7px;
+  border-radius:4px;
+  background:var(--blue);
+  border-left:5px solid var(--dark);
+  color:#fff;
+  padding:8px 10px;
+  box-shadow:0 1px 3px #999;
+  overflow:hidden;
 }
 
-.event:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0,0,0,.15);
+.event.induction{
+  background:#6e8ba8;
+  border-left-color:#526c86;
 }
 
-.event.regular {
-    background: #e8f3fc;
-    color: #24689e;
-    border-left-color: #438fd1;
+.event.extra{
+  background:#687b8d;
+  border-left-color:#50616f;
 }
 
-.event.weekly {
-    background: #edf7ef;
-    color: #347044;
-    border-left-color: #58a06b;
+.event b{
+  font-size:14px;
 }
 
-.event.induction {
-    background: #fff4df;
-    color: #8b641f;
-    border-left-color: #e2a438;
+.event span{
+  display:block;
+  font-size:12px;
+  margin-top:4px;
 }
 
-.event.extra {
-    background: #f0ecfa;
-    color: #66529b;
-    border-left-color: #8973c5;
+.empty{
+  text-align:center;
+  color:#aaa;
+  padding-top:40px;
+  font-size:14px;
 }
 
-.event-title {
-    display: block;
-    font-weight: bold;
-    font-size: 14px;
+.footer{
+  text-align:center;
+  padding:16px 5px 24px;
+  color:#666;
+  font-size:14px;
 }
 
-.event-time {
-    display: block;
-    font-size: 11px;
-    margin-bottom: 2px;
+.update{
+  color:#358bd0;
+  font-weight:700;
+  font-size:16px;
 }
 
-.no-classes {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #777;
-    text-align: center;
-    gap: 7px;
+.cmis{
+  font-size:25px;
+  font-weight:800;
+  color:#222;
+  margin:10px;
 }
 
-.no-classes strong {
-    color: #555;
-    font-size: 17px;
+.cmis span{
+  color:#222;
 }
 
-/* =========================
-   UPDATE / FOOTER
-========================= */
-
-.updated {
-    text-align: center;
-    color: var(--blue);
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px 15px 16px;
+.cmis i{
+  color:#e22;
+  font-style:normal;
 }
 
-.footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    padding: 5px 10px 22px;
-    font-size: 14px;
+.copy{
+  font-size:11px;
+  color:#999;
+  line-height:1.4;
 }
 
-.cmis {
-    font-family: Georgia, serif;
-    font-size: 27px;
-    font-weight: bold;
-    letter-spacing: -2px;
+.hidden{
+  display:none!important;
 }
 
-.cmis span {
-    color: #e53939;
-}
 
-/* =========================
-   MONTH VIEW
-========================= */
+/* WEEK */
 
-.month-view {
-    padding: 15px;
+.weekwrap{
+  overflow:auto;
 }
 
-.month-heading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-    color: var(--blue);
-    margin-bottom: 15px;
+.week{
+  min-width:850px;
+  display:grid;
+  grid-template-columns:58px repeat(7,1fr);
 }
 
-.month-heading h2 {
-    margin: 0;
-    font-size: 22px;
+.wkhead{
+  height:55px;
+  text-align:center;
+  color:#358bd0;
+  font-weight:700;
+  padding:8px 2px;
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ccc;
 }
 
-.month-arrow {
-    border: 0;
-    background: transparent;
-    color: var(--blue);
-    font-size: 25px;
-    cursor: pointer;
+.wkhead span{
+  display:block;
+  color:#777;
+  font-size:11px;
+  font-weight:400;
+  margin-top:3px;
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
+.wktime{
+  border-right:1px solid #ccc;
 }
 
-.calendar-day-name {
-    min-height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f7f7f7;
-    color: var(--blue);
-    font-weight: bold;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+.wktime .time{
+  height:120px;
 }
 
-.calendar-cell {
-    min-height: 105px;
-    background: white;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    padding: 8px;
-    cursor: pointer;
-    text-align: left;
+.wkcol{
+  height:720px;
+  position:relative;
+  border-right:1px solid #ddd;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 29px,
+      #eee 30px,
+      transparent 31px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 119px,
+      #d0d0d0 120px
+    );
 }
 
-.calendar-cell:hover {
-    background: #f5faff;
+.wkcol .event{
+  left:2px;
+  right:2px;
+  padding:5px;
+  font-size:11px;
 }
 
-.calendar-cell.selected {
-    box-shadow: inset 0 0 0 3px var(--blue);
-    background: #f2f8fd;
+.wkcol .event b{
+  font-size:11px;
 }
 
-.calendar-number {
-    font-weight: bold;
-}
 
-.event-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--blue);
-    margin: 9px 4px 0 0;
-}
+/* MONTH */
 
-.event-dot.weekly {
-    background: #58a06b;
+.monthhead{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  background:#eee;
 }
 
-.event-dot.induction {
-    background: #e2a438;
+.monthhead div{
+  text-align:center;
+  padding:9px 2px;
+  color:#358bd0;
+  font-weight:700;
+  font-size:12px;
 }
 
-.event-dot.extra {
-    background: #8973c5;
+.monthgrid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  grid-auto-rows:minmax(108px,1fr);
 }
-
-/* =========================
-   DATE PICKER
-========================= */
 
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.38);
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 100px 15px 20px;
+.cell{
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  padding:6px;
+  min-height:108px;
 }
 
-.picker {
-    background: white;
-    width: min(390px,100%);
-    border-radius: 8px;
-    box-shadow: 0 15px 50px rgba(0,0,0,.25);
-    padding: 18px;
+.cell.other{
+  background:#fafafa;
+  color:#bbb;
 }
 
-.picker-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--blue);
-    font-size: 18px;
+.num{
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:5px;
 }
 
-.picker-header button {
-    border: 0;
-    background: transparent;
-    color: var(--blue);
-    font-size: 24px;
-    cursor: pointer;
+.cell.today .num{
+  display:inline-grid;
+  place-items:center;
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:var(--blue);
+  color:#fff;
 }
 
-.picker-weekdays,
-.picker-days {
-    display: grid;
-    grid-template-columns: repeat(7,1fr);
-    gap: 3px;
+.pill{
+  padding:4px 5px;
+  margin:3px 0;
+  border-radius:3px;
+  color:#fff;
+  background:var(--blue);
+  font-size:10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.picker-weekdays {
-    margin-top: 15px;
-    color: #777;
-    font-size: 12px;
-    text-align: center;
+.pill.induction{
+  background:#6e8ba8;
 }
 
-.picker-days button {
-    height: 40px;
-    border: 0;
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-    position: relative;
+.pill.extra{
+  background:#687b8d;
 }
 
-.picker-days button:hover {
-    background: #edf6fd;
-}
 
-.picker-days button.selected {
-    background: var(--blue);
-    color: white;
-    font-weight: bold;
-}
+/* SEMESTER */
 
-.picker-days i {
-    width: 5px;
-    height: 5px;
-    background: var(--blue);
-    border-radius: 50%;
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
+.sem{
+  padding:15px;
 }
 
-/* =========================
-   EVENT DETAILS
-========================= */
-
-.modal {
-    background: white;
-    width: min(470px,100%);
-    border-radius: 9px;
-    padding: 28px;
-    position: relative;
-    box-shadow: 0 15px 50px rgba(0,0,0,.3);
+.sem h2{
+  margin:0;
+  color:#358bd0;
+  font-size:20px;
 }
 
-.close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    border: 0;
-    background: #eee;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    font-size: 18px;
+.sem p{
+  color:#777;
+  margin:5px 0 15px;
 }
 
-.modal-type {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: bold;
+.semrow{
+  display:grid;
+  grid-template-columns:120px 1fr auto;
+  gap:12px;
+  padding:13px 5px;
+  border-bottom:1px solid #ddd;
+  align-items:center;
 }
 
-.modal h2 {
-    margin: 13px 0 4px;
-    font-size: 25px;
+.semdate{
+  font-weight:700;
+  color:#358bd0;
 }
 
-.modal-date {
-    color: #777;
-    margin-top: 0;
+.tag{
+  border-radius:12px;
+  padding:5px 9px;
+  background:#e7f3fb;
+  color:#287dbf;
+  font-size:11px;
+  white-space:nowrap;
 }
 
-.modal-detail {
-    display: flex;
-    gap: 10px;
-    margin: 17px 0;
-    font-weight: bold;
+.tag.induction{
+  background:#e8edf2;
+  color:#526c86;
 }
 
-.modal-description {
-    color: #555;
-    line-height: 1.5;
+.tag.extra{
+  background:#edf0f2;
+  color:#52616f;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 650px) {
-
-    .header {
-        height: 78px;
-        padding: 8px 12px;
-    }
-
-    .logo {
-        font-size: 25px;
-    }
-
-    .menu-btn {
-        width: 43px;
-        height: 43px;
-    }
-
-    .toolbar {
-        height: 55px;
-    }
 
-    .tool-btn {
-        width: 36px;
-        height: 36px;
-    }
 
-    .date-bar {
-        height: 53px;
-    }
+/* MOBILE */
 
-    .date-title {
-        font-size: 16px;
-    }
+@media(max-width:650px){
 
-    .today-btn {
-        font-size: 11px;
-        padding: 5px 7px;
-        right: 7px;
-    }
+  .header{
+    height:76px;
+    padding:8px 12px;
+  }
 
-    .timetable {
-        grid-template-columns: 58px 1fr;
-        height: 720px;
-    }
+  .logo{
+    font-size:22px;
+  }
 
-    .time-label {
-        font-size: 11px;
-        right: 5px;
-    }
+  .menu{
+    width:44px;
+    height:44px;
+  }
 
-    .event {
-        left: 4px;
-        right: 4px;
-        padding: 5px 6px;
-    }
+  .app{
+    padding:0 8px;
+  }
 
-    .event-title {
-        font-size: 11px;
-    }
+  .daygrid{
+    grid-template-columns:58px 1fr;
+  }
 
-    .event-time {
-        font-size: 9px;
-    }
+  .time{
+    font-size:14px;
+  }
 
-    .calendar-cell {
-        min-height: 70px;
-        padding: 6px;
-    }
+  .today{
+    margin-left:0;
+  }
 
-    .footer {
-        font-size: 11px;
-        gap: 12px;
-    }
+  .semrow{
+    grid-template-columns:82px 1fr;
+  }
 
-    .cmis {
-        font-size: 23px;
-    }
+  .semrow .tag{
+    display:none;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
+<header class="header">
 
-    <div class="logo">
-        UNIVERSITY OF<br>
-        WESTMINSTER<span>▦</span>
-    </div>
+  <div class="logo">
+    UNIVERSITY OF<br>
+    WESTMINSTER<small>▦</small>
+  </div>
 
-    <button class="menu-btn" aria-label="Menu">
-        ☰
+  <button class="menu">≡</button>
+
+</header>
+
+
+<main class="app">
+
+  <div class="toolbar">
+
+    <button class="btn active" data-view="day">
+      Day
     </button>
 
-</div>
+    <button class="btn" data-view="week">
+      Week
+    </button>
+
+    <button class="btn" data-view="month">
+      Month
+    </button>
+
+    <button class="btn" data-view="semester">
+      Semester
+    </button>
+
+    <button class="btn today" id="today">
+      Today
+    </button>
+
+  </div>
 
 
-<div class="toolbar">
+  <!-- DAY VIEW -->
 
-    <div class="toolbar-group">
+  <section id="day">
 
-        <button
-            class="tool-btn"
-            id="previousDay"
-            aria-label="Previous day">
+    <div class="box">
+
+      <div class="bluebar">
+
+        <div class="side">
+
+          <button class="circle" id="prev">
             ←
-        </button>
+          </button>
 
-        <button
-            class="tool-btn"
-            id="datePickerButton"
-            aria-label="Choose date">
+          <button class="circle small" id="pick">
             ▦
-        </button>
+          </button>
 
-    </div>
+        </div>
 
+        <div class="side">
 
-    <div class="toolbar-group">
-
-        <button
-            class="tool-btn"
-            id="monthToggle"
-            aria-label="Month view">
+          <button class="circle small" id="toWeek">
             ▦
-        </button>
+          </button>
 
-        <button
-            class="tool-btn"
-            id="nextDay"
-            aria-label="Next day">
+          <button class="circle" id="next">
             →
-        </button>
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="datebar" id="dayDate"></div>
+
+      <div class="daygrid">
+
+        <div class="times" id="times"></div>
+
+        <div class="hours" id="hours"></div>
+
+      </div>
 
     </div>
 
-</div>
+  </section>
 
 
-<div class="date-bar">
+  <!-- WEEK VIEW -->
 
-    <button
-        class="date-title"
-        id="dateTitle">
-    </button>
+  <section id="week" class="hidden">
 
-    <button
-        class="today-btn"
-        id="todayButton">
-        Today
-    </button>
+    <div class="box weekwrap">
 
-</div>
+      <div class="bluebar">
+
+        <div class="side">
+
+          <button class="circle" id="prevW">
+            ←
+          </button>
+
+          <button class="circle small">
+            ▦
+          </button>
+
+        </div>
+
+        <div class="side">
+
+          <button class="circle small">
+            ▦
+          </button>
+
+          <button class="circle" id="nextW">
+            →
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="week" id="weekGrid"></div>
+
+    </div>
+
+  </section>
 
 
-<main id="main"></main>
+  <!-- MONTH VIEW -->
+
+  <section id="month" class="hidden">
+
+    <div class="box">
+
+      <div class="bluebar">
+
+        <div class="side">
+
+          <button class="circle" id="prevM">
+            ←
+          </button>
+
+          <button class="circle small">
+            ▦
+          </button>
+
+        </div>
+
+        <div class="side">
+
+          <button class="circle small">
+            ▦
+          </button>
+
+          <button class="circle" id="nextM">
+            →
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="datebar" id="monthTitle"></div>
+
+      <div class="monthhead" id="monthHead"></div>
+
+      <div class="monthgrid" id="monthGrid"></div>
+
+    </div>
+
+  </section>
 
 
-<div class="updated">
-    Timetabled events last full update 5:20 am on
-    7 September 2026
-</div>
+  <!-- SEMESTER VIEW -->
+
+  <section id="semester" class="hidden">
+
+    <div class="box">
+
+      <div class="bluebar">
+
+        <div class="side">
+          <button class="circle small">
+            ▦
+          </button>
+        </div>
+
+      </div>
+
+      <div class="sem" id="semesterList"></div>
+
+    </div>
+
+  </section>
 
 
-<div class="footer">
+  <div class="footer">
 
-    <span>Accessibility statement</span>
+    <div class="update">
+      Timetabled events last full update 5:20 am on 7<br>
+      September 2026
+    </div>
 
     <div class="cmis">
-        cmis<span>go</span>
+      cmis<span>go</span><i>●</i>
     </div>
 
-    <span>About</span>
-
-</div>
-
-
-<!-- DATE PICKER -->
-
-<div
-    class="overlay"
-    id="pickerOverlay"
-    style="display:none;">
-
-    <div class="picker">
-
-        <div class="picker-header">
-
-            <button id="pickerPrevious">‹</button>
-
-            <strong id="pickerTitle"></strong>
-
-            <button id="pickerNext">›</button>
-
-        </div>
-
-        <div
-            class="picker-weekdays"
-            id="pickerWeekdays">
-        </div>
-
-        <div
-            class="picker-days"
-            id="pickerDays">
-        </div>
-
+    <div>
+      Accessibility statement
+      &nbsp;&nbsp;&nbsp;
+      About
     </div>
 
-</div>
-
-
-<!-- EVENT MODAL -->
-
-<div
-    class="overlay"
-    id="eventOverlay"
-    style="display:none;">
-
-    <div class="modal">
-
-        <button
-            class="close"
-            id="closeModal">
-            ×
-        </button>
-
-        <div
-            class="modal-type"
-            id="modalType">
-        </div>
-
-        <h2 id="modalTitle"></h2>
-
-        <div
-            class="modal-date"
-            id="modalDate">
-        </div>
-
-        <div
-            class="modal-detail"
-            id="modalTime">
-        </div>
-
-        <div
-            class="modal-detail"
-            id="modalRoom">
-        </div>
-
-        <p
-            class="modal-description"
-            id="modalDescription">
-        </p>
-
+    <div class="copy">
+      © Copyright - Advanced Computer Software Group Ltd All Rights Reserved.<br>
+      Advanced is a trading name of Advanced Business Software and Solutions Limited.
     </div>
 
-</div>
+  </div>
+
+</main>
 
 
 <script>
 
 /* =========================================================
-   YOUR TIMETABLE DATA
-========================================================= */
+   IMPORTANT:
+   THE TIMETABLE OPENS ON THE ACTUAL CURRENT DATE.
+   ========================================================= */
 
-const schedule = [
+const start = new Date(2026,8,17);
 
-    {
-        date: "2026-09-17",
-        title: "Welcome & Induction",
-        start: "15:00",
-        end: "16:00",
-        type: "induction",
-        room: "Main campus",
-        description:
-            "Welcome and induction session for the new academic year."
-    },
+// Semester end
+const regularEnd = new Date(2026,11,18);
 
-    /* SEPTEMBER */
 
-    {
-        date: "2026-09-21",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
+/* OCCASIONAL EXTRA CLASSES */
 
-    {
-        date: "2026-09-23",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
+const extraEvents = [
 
-    {
-        date: "2026-09-28",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
+  ['2026-09-24','09:30','11:00','Extra class','extra'],
 
-    {
-        date: "2026-09-29",
-        title: "Study & Research Skills",
-        start: "10:00",
-        end: "12:00",
-        type: "extra",
-        room: "Learning centre",
-        description: "Additional study and research skills session."
-    },
+  ['2026-10-02','10:00','12:00','Additional class','extra'],
 
-    /* OCTOBER */
+  ['2026-10-14','13:00','15:00','Additional class','extra'],
 
-    {
-        date: "2026-10-01",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
+  ['2026-10-29','09:00','11:00','Extra class','extra'],
 
-    {
-        date: "2026-10-05",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
+  ['2026-11-06','11:00','13:00','Additional class','extra'],
 
-    {
-        date: "2026-10-08",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
+  ['2026-11-19','15:30','17:00','Extra class','extra'],
 
-    {
-        date: "2026-10-12",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
+  ['2026-12-03','10:00','12:00','Additional class','extra'],
 
-    {
-        date: "2026-10-13",
-        title: "Tutorial & Assessment Prep",
-        start: "11:00",
-        end: "13:30",
-        type: "extra",
-        room: "Tutorial room",
-        description: "Occasional tutorial and assessment preparation."
-    },
-
-    {
-        date: "2026-10-15",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-10-19",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-10-21",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-10-23",
-        title: "Applied Practice Seminar",
-        start: "09:30",
-        end: "12:00",
-        type: "extra",
-        room: "Seminar room",
-        description: "Occasional applied practice seminar."
-    },
-
-    {
-        date: "2026-10-26",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-10-29",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    /* NOVEMBER */
-
-    {
-        date: "2026-11-02",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-11-04",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-11-09",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-11-10",
-        title: "Library & Academic Skills",
-        start: "10:30",
-        end: "12:30",
-        type: "extra",
-        room: "Library",
-        description: "Occasional academic skills class."
-    },
-
-    {
-        date: "2026-11-12",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-11-16",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-11-18",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-11-20",
-        title: "Group Discussion",
-        start: "13:00",
-        end: "15:00",
-        type: "extra",
-        room: "Discussion room",
-        description: "Occasional group discussion session."
-    },
-
-    {
-        date: "2026-11-23",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-11-26",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-11-30",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    /* DECEMBER */
-
-    {
-        date: "2026-12-01",
-        title: "Assessment Workshop",
-        start: "09:30",
-        end: "11:30",
-        type: "extra",
-        room: "Workshop room",
-        description: "Occasional assessment workshop."
-    },
-
-    {
-        date: "2026-12-03",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-12-07",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-12-10",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-12-14",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-12-15",
-        title: "Reflective Practice",
-        start: "12:00",
-        end: "14:30",
-        type: "extra",
-        room: "Seminar room",
-        description: "Occasional reflective practice session."
-    },
-
-    {
-        date: "2026-12-17",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-12-21",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-12-23",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2026-12-28",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2026-12-30",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    /* JANUARY 2027 */
-
-    {
-        date: "2027-01-04",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2027-01-07",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:00",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    },
-
-    {
-        date: "2027-01-11",
-        title: "Psychology & Counselling",
-        start: "15:00",
-        end: "17:00",
-        type: "regular",
-        room: "Teaching room",
-        description: "Regular Monday class."
-    },
-
-    {
-        date: "2027-01-12",
-        title: "Academic Planning",
-        start: "10:00",
-        end: "12:00",
-        type: "extra",
-        room: "Learning centre",
-        description: "Occasional academic planning session."
-    },
-
-    {
-        date: "2027-01-14",
-        title: "Core Skills Workshop",
-        start: "14:00",
-        end: "17:30",
-        type: "weekly",
-        room: "Seminar room",
-        description: "Weekly additional teaching session."
-    }
+  ['2026-12-11','13:30','15:00','Extra class','extra']
 
 ];
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/* HELPERS */
 
-let selectedDate = new Date(2026, 8, 17);
-let calendarMonth = new Date(2026, 8, 1);
-let monthView = false;
+function dkey(d){
 
+  return `${d.getFullYear()}-${
+    String(d.getMonth()+1).padStart(2,'0')
+  }-${
+    String(d.getDate()).padStart(2,'0')
+  }`;
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-const monthNames = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
-];
-
-const weekdayNames = [
-    "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
-];
-
-function key(date) {
-    return date.getFullYear() + "-" +
-        String(date.getMonth()+1).padStart(2,"0") + "-" +
-        String(date.getDate()).padStart(2,"0");
-}
-
-function prettyDate(date) {
-    return new Intl.DateTimeFormat("en-GB", {
-        weekday:"short",
-        day:"numeric",
-        month:"short",
-        year:"numeric"
-    }).format(date);
-}
-
-function longDate(date) {
-    return new Intl.DateTimeFormat("en-GB", {
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-    }).format(date);
-}
-
-function prettyTime(time) {
-
-    let [hour, minute] = time.split(":").map(Number);
-
-    let ampm = hour >= 12 ? "PM" : "AM";
-
-    let display = hour % 12 || 12;
-
-    return display + ":" +
-        String(minute).padStart(2,"0") +
-        " " + ampm;
-}
-
-function timeMinutes(time) {
-
-    let [h,m] = time.split(":").map(Number);
-
-    return h * 60 + m;
-}
-
-function eventsFor(date) {
-
-    return schedule
-        .filter(event => event.date === key(date))
-        .sort((a,b) =>
-            timeMinutes(a.start) -
-            timeMinutes(b.start)
-        );
 }
 
 
-/* =========================================================
-   RENDER DAY VIEW
-========================================================= */
+function parseKey(s){
 
-function renderDay() {
+  let [y,m,d]=s.split('-').map(Number);
 
-    document.getElementById("dateTitle").textContent =
-        prettyDate(selectedDate);
+  return new Date(y,m-1,d);
 
-    let main = document.getElementById("main");
-
-    let events = eventsFor(selectedDate);
-
-    let html = `
-        <section class="timetable">
-
-            <div class="times">
-    `;
-
-    for(let hour = 8; hour <= 20; hour++) {
-
-        let display = hour % 12 || 12;
-        let suffix = hour < 12 ? "AM" : "PM";
-
-        html += `
-            <div class="time-row">
-                <span class="time-label">
-                    ${display}${suffix}
-                </span>
-            </div>
-        `;
-    }
-
-    html += `
-            </div>
-
-            <div class="timeline">
-    `;
-
-    for(let i=0; i<13; i++) {
-        html += `<div class="hour-line"></div>`;
-    }
-
-    if(events.length === 0) {
-
-        html += `
-            <div class="no-classes">
-                <div style="font-size:32px">◷</div>
-                <strong>No classes scheduled for this day.</strong>
-                <span>Select another date using the arrows or calendar.</span>
-            </div>
-        `;
-
-    } else {
-
-        events.forEach((event,index) => {
-
-            /*
-              Timetable starts at 8 AM.
-              60 pixels = 1 hour.
-            */
-
-            let start = timeMinutes(event.start);
-            let end = timeMinutes(event.end);
-
-            let top = ((start - 480) / 60) * 60;
-
-            let height = ((end-start) / 60) * 60;
-
-            if(height < 48) height = 48;
-
-            html += `
-                <button
-                    class="event ${event.type}"
-                    style="
-                        top:${top}px;
-                        height:${height}px;
-                    "
-                    onclick="openEvent(${index})"
-                    data-event-index="${index}"
-                >
-                    <span class="event-time">
-                        ${prettyTime(event.start)}
-                        – ${prettyTime(event.end)}
-                    </span>
-
-                    <span class="event-title">
-                        ${event.title}
-                    </span>
-                </button>
-            `;
-        });
-    }
-
-    html += `
-            </div>
-        </section>
-    `;
-
-    main.innerHTML = html;
-
-    window.currentEvents = events;
 }
 
 
-/* =========================================================
-   MONTH VIEW
-========================================================= */
+function fmt(
+  d,
+  opt={
+    weekday:'short',
+    day:'numeric',
+    month:'short',
+    year:'numeric'
+  }
+){
 
-function renderMonth() {
+  return d.toLocaleDateString('en-GB',opt);
 
-    document.getElementById("dateTitle").textContent =
-        prettyDate(selectedDate);
+}
 
-    let main = document.getElementById("main");
 
-    let year = calendarMonth.getFullYear();
-    let month = calendarMonth.getMonth();
+function timeMin(s){
 
-    let firstDay =
-        new Date(year,month,1).getDay();
+  let [h,m]=s.split(':').map(Number);
 
-    let daysInMonth =
-        new Date(year,month+1,0).getDate();
+  return h*60+m;
 
-    let html = `
-        <section class="month-view">
+}
 
-            <div class="month-heading">
 
-                <button
-                    class="month-arrow"
-                    onclick="changeMonth(-1)">
-                    ‹
-                </button>
+function clock(h){
 
-                <h2>
-                    ${monthNames[month]} ${year}
-                </h2>
+  if(h===12) return '12PM';
 
-                <button
-                    class="month-arrow"
-                    onclick="changeMonth(1)">
-                    ›
-                </button>
+  if(h>12) return (h-12)+'PM';
 
-            </div>
+  return h+'AM';
 
-            <div class="calendar-grid">
-    `;
+}
 
-    weekdayNames.forEach(day => {
 
-        html += `
-            <div class="calendar-day-name">
-                ${day}
-            </div>
-        `;
+/* GET EVENTS FOR A DATE */
+
+function eventsFor(d){
+
+  const key=dkey(d);
+
+  const out=[];
+
+
+  /* ONLY EVENT ON 17 SEPTEMBER */
+
+  if(key==='2026-09-17'){
+
+    out.push({
+      start:'15:00',
+      end:'16:00',
+      title:'Welcome & Induction',
+      type:'induction'
     });
 
-    for(let i=0; i<firstDay; i++) {
-        html += `<div class="calendar-cell"></div>`;
+  }
+
+
+  /*
+     REGULAR CLASSES ONLY START AFTER
+     17 SEPTEMBER
+  */
+
+  if(d>start && d<=regularEnd){
+
+    const dow=d.getDay();
+
+
+    /* EVERY MONDAY 3–5 */
+
+    if(dow===1){
+
+      out.push({
+        start:'15:00',
+        end:'17:00',
+        title:'Regular class',
+        type:'regular'
+      });
+
     }
 
-    for(let day=1; day<=daysInMonth; day++) {
 
-        let date =
-            new Date(year,month,day);
+    /*
+       WEDNESDAY / THURSDAY CLASSES
 
-        let dateKey = key(date);
+       They alternate naturally.
+    */
 
-        let events =
-            eventsFor(date);
+    if(dow===3){
 
-        let selected =
-            dateKey === key(selectedDate)
-                ? "selected"
-                : "";
+      out.push({
+        start:'14:00',
+        end:
+          Math.floor((d.getDate()+d.getMonth())/3)%3===0
+            ? '17:30'
+            : '17:00',
+        title:'Regular class',
+        type:'regular'
+      });
 
-        html += `
-            <button
-                class="calendar-cell ${selected}"
-                onclick="selectCalendarDate('${dateKey}')"
+    }
+
+
+    if(
+      dow===4 &&
+      Math.floor((d.getDate()+d.getMonth())/3)%2===0
+    ){
+
+      out.push({
+        start:'14:00',
+        end:'17:00',
+        title:'Regular class',
+        type:'regular'
+      });
+
+    }
+
+  }
+
+
+  /* EXTRA CLASSES */
+
+  extraEvents.forEach(e=>{
+
+    if(e[0]===key){
+
+      out.push({
+        start:e[1],
+        end:e[2],
+        title:e[3],
+        type:e[4]
+      });
+
+    }
+
+  });
+
+
+  return out;
+
+}
+
+
+/*
+   THIS IS THE IMPORTANT PART:
+
+   When the website opens, it uses today's
+   actual date instead of a fixed date.
+*/
+
+let current=new Date();
+
+current.setHours(0,0,0,0);
+
+let monthCursor=new Date(
+  current.getFullYear(),
+  current.getMonth(),
+  1
+);
+
+
+const hours=[
+  8,9,10,11,12,13,14,15,
+  16,17,18,19,20,21
+];
+
+
+/* DAY VIEW */
+
+function renderDay(){
+
+  document.getElementById('dayDate').textContent=
+    fmt(
+      current,
+      {
+        weekday:'short',
+        day:'numeric',
+        month:'short',
+        year:'numeric'
+      }
+    );
+
+
+  document.getElementById('times').innerHTML=
+
+    hours.map(h=>`
+
+      <div class="time">
+        ${clock(h)}
+      </div>
+
+    `).join('');
+
+
+  const ev=eventsFor(current);
+
+
+  document.getElementById('hours').innerHTML=
+
+    ev.length
+
+      ?
+
+      ev.map(e=>{
+
+        const top=
+          (timeMin(e.start)-8*60)*2;
+
+        const height=
+          (timeMin(e.end)-timeMin(e.start))*2;
+
+
+        return `
+
+          <div
+            class="event ${e.type}"
+            style="
+              top:${top}px;
+              height:${Math.max(height,30)}px
+            "
+          >
+
+            <b>${e.title}</b>
+
+            <span>
+              ${e.start}–${e.end}
+            </span>
+
+          </div>
+
+        `;
+
+      }).join('')
+
+      :
+
+      '<div class="empty">No timetabled events</div>';
+
+}
+
+
+/* WEEK VIEW */
+
+function renderWeek(){
+
+  let monday=new Date(current);
+
+  monday.setDate(
+    current.getDate()-
+    (current.getDay()+6)%7
+  );
+
+
+  const names=[
+    'Mon','Tue','Wed','Thu',
+    'Fri','Sat','Sun'
+  ];
+
+
+  let head=
+    '<div class="wktime"></div>';
+
+
+  head+=names.map((n,i)=>{
+
+    let x=new Date(monday);
+
+    x.setDate(monday.getDate()+i);
+
+
+    return `
+
+      <div class="wkhead">
+
+        ${n}
+
+        <span>
+          ${x.getDate()}
+          ${x.toLocaleDateString(
+            'en-GB',
+            {month:'short'}
+          )}
+        </span>
+
+      </div>
+
+    `;
+
+  }).join('');
+
+
+  let body=
+
+    '<div class="wktime">'+
+
+    hours.map(h=>`
+
+      <div class="time">
+        ${clock(h)}
+      </div>
+
+    `).join('')+
+
+    '</div>';
+
+
+  for(let i=0;i<7;i++){
+
+    let x=new Date(monday);
+
+    x.setDate(monday.getDate()+i);
+
+
+    let ev=eventsFor(x);
+
+
+    body+=`
+
+      <div class="wkcol">
+
+        ${ev.map(e=>{
+
+          let top=
+            (timeMin(e.start)-480)*2;
+
+          let h=
+            (timeMin(e.end)-timeMin(e.start))*2;
+
+
+          return `
+
+            <div
+              class="event ${e.type}"
+              style="
+                top:${top}px;
+                height:${Math.max(h,28)}px
+              "
             >
 
-                <div class="calendar-number">
-                    ${day}
-                </div>
-        `;
+              <b>${e.title}</b>
 
-        events.slice(0,3).forEach(event => {
+              <span>
+                ${e.start}–${e.end}
+              </span>
 
-            html += `
-                <i class="event-dot ${event.type}"></i>
-            `;
-
-        });
-
-        html += `
-            </button>
-        `;
-    }
-
-    html += `
             </div>
-        </section>
+
+          `;
+
+        }).join('')}
+
+      </div>
+
     `;
 
-    main.innerHTML = html;
+  }
+
+
+  document.getElementById('weekGrid').innerHTML=
+    head+body;
+
 }
 
 
-/* =========================================================
-   MAIN RENDER
-========================================================= */
+/* MONTH VIEW */
 
-function render() {
+function renderMonth(){
 
-    if(monthView) {
-        renderMonth();
-    } else {
-        renderDay();
-    }
-}
+  document.getElementById('monthTitle').textContent=
 
-
-/* =========================================================
-   DAY NAVIGATION
-========================================================= */
-
-document.getElementById("previousDay")
-    .addEventListener("click", () => {
-
-        selectedDate.setDate(
-            selectedDate.getDate() - 1
-        );
-
-        calendarMonth =
-            new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                1
-            );
-
-        render();
-    });
+    monthCursor.toLocaleDateString(
+      'en-GB',
+      {
+        month:'long',
+        year:'numeric'
+      }
+    );
 
 
-document.getElementById("nextDay")
-    .addEventListener("click", () => {
-
-        selectedDate.setDate(
-            selectedDate.getDate() + 1
-        );
-
-        calendarMonth =
-            new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                1
-            );
-
-        render();
-    });
+  const names=[
+    'Mon','Tue','Wed',
+    'Thu','Fri','Sat','Sun'
+  ];
 
 
-/* =========================================================
-   TODAY
-========================================================= */
+  document.getElementById('monthHead').innerHTML=
 
-document.getElementById("todayButton")
-    .addEventListener("click", () => {
-
-        selectedDate = new Date();
-
-        calendarMonth =
-            new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                1
-            );
-
-        render();
-    });
+    names.map(x=>`<div>${x}</div>`).join('');
 
 
-/* =========================================================
-   MONTH TOGGLE
-========================================================= */
-
-document.getElementById("monthToggle")
-    .addEventListener("click", () => {
-
-        monthView = !monthView;
-
-        document
-            .getElementById("monthToggle")
-            .classList.toggle(
-                "active",
-                monthView
-            );
-
-        calendarMonth =
-            new Date(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                1
-            );
-
-        render();
-    });
+  let first=
+    (monthCursor.getDay()+6)%7;
 
 
-/* =========================================================
-   MONTH NAVIGATION
-========================================================= */
+  let days=
+    new Date(
+      monthCursor.getFullYear(),
+      monthCursor.getMonth()+1,
+      0
+    ).getDate();
 
-function changeMonth(amount) {
 
-    calendarMonth =
+  let prev=
+    new Date(
+      monthCursor.getFullYear(),
+      monthCursor.getMonth(),
+      0
+    ).getDate();
+
+
+  let cells=[];
+
+
+  for(let i=0;i<42;i++){
+
+    let num=i-first+1;
+
+    let date;
+
+    let other=false;
+
+
+    if(num<1){
+
+      date=
         new Date(
-            calendarMonth.getFullYear(),
-            calendarMonth.getMonth() + amount,
-            1
+          monthCursor.getFullYear(),
+          monthCursor.getMonth()-1,
+          prev+num
         );
 
-    render();
-}
+      other=true;
 
+    }
 
-/* =========================================================
-   SELECT DATE FROM MONTH
-========================================================= */
+    else if(num>days){
 
-function selectCalendarDate(dateString) {
-
-    let [year,month,day] =
-        dateString.split("-").map(Number);
-
-    selectedDate =
-        new Date(year,month-1,day);
-
-    calendarMonth =
-        new Date(year,month-1,1);
-
-    monthView = false;
-
-    document
-        .getElementById("monthToggle")
-        .classList.remove("active");
-
-    render();
-}
-
-
-/* =========================================================
-   DATE PICKER
-========================================================= */
-
-document.getElementById("datePickerButton")
-    .addEventListener("click", openPicker);
-
-document.getElementById("dateTitle")
-    .addEventListener("click", openPicker);
-
-
-function openPicker() {
-
-    calendarMonth =
+      date=
         new Date(
-            selectedDate.getFullYear(),
-            selectedDate.getMonth(),
-            1
+          monthCursor.getFullYear(),
+          monthCursor.getMonth()+1,
+          num-days
         );
 
+      other=true;
+
+    }
+
+    else{
+
+      date=
+        new Date(
+          monthCursor.getFullYear(),
+          monthCursor.getMonth(),
+          num
+        );
+
+    }
+
+
+    let ev=eventsFor(date);
+
+
+    cells.push(`
+
+      <div
+        class="
+          cell
+          ${other?'other':''}
+          ${dkey(date)===dkey(new Date())?'today':''}
+        "
+      >
+
+        <div class="num">
+          ${date.getDate()}
+        </div>
+
+        ${ev.map(e=>`
+
+          <div class="pill ${e.type}">
+            ${e.start} ${e.title}
+          </div>
+
+        `).join('')}
+
+      </div>
+
+    `);
+
+  }
+
+
+  document.getElementById('monthGrid').innerHTML=
+    cells.join('');
+
+}
+
+
+/* SEMESTER VIEW */
+
+function renderSemester(){
+
+  let all=[];
+
+
+  for(
+    let d=new Date(start);
+    d<=regularEnd;
+    d.setDate(d.getDate()+1)
+  ){
+
+    eventsFor(d).forEach(e=>{
+
+      all.push({
+        date:new Date(d),
+        ...e
+      });
+
+    });
+
+  }
+
+
+  all.sort(
+    (a,b)=>
+      a.date-b.date ||
+      timeMin(a.start)-timeMin(b.start)
+  );
+
+
+  document.getElementById('semesterList').innerHTML=
+
+    `
+
+      <h2>Semester timetable</h2>
+
+      <p>
+        17 September 2026 –
+        18 December 2026
+      </p>
+
+    `
+
+    +
+
+    all.map(e=>`
+
+      <div class="semrow">
+
+        <div class="semdate">
+
+          ${fmt(
+            e.date,
+            {
+              weekday:'short',
+              day:'numeric',
+              month:'short'
+            }
+          )}
+
+        </div>
+
+
+        <div>
+
+          <b>${e.title}</b>
+
+          <br>
+
+          <small>
+            ${e.start}–${e.end}
+          </small>
+
+        </div>
+
+
+        <div
+          class="tag ${e.type}"
+        >
+
+          ${
+            e.type==='induction'
+              ? 'Welcome & Induction'
+              : e.type==='extra'
+                ? 'Occasional extra'
+                : e.end==='17:30'
+                  ? 'Extended session'
+                  : 'Regular class'
+          }
+
+        </div>
+
+      </div>
+
+    `).join('');
+
+}
+
+
+/* VIEW SWITCHING */
+
+function show(view){
+
+  [
+    'day',
+    'week',
+    'month',
+    'semester'
+  ].forEach(v=>{
+
     document
-        .getElementById("pickerOverlay")
-        .style.display = "flex";
+      .getElementById(v)
+      .classList
+      .toggle('hidden',v!==view);
 
-    renderPicker();
+  });
+
+
+  document
+    .querySelectorAll('.btn[data-view]')
+    .forEach(b=>{
+
+      b.classList.toggle(
+        'active',
+        b.dataset.view===view
+      );
+
+    });
+
 }
 
 
-function closePicker() {
+/* VIEW BUTTONS */
 
-    document
-        .getElementById("pickerOverlay")
-        .style.display = "none";
-}
+document
+  .querySelectorAll('.btn[data-view]')
+  .forEach(b=>{
 
+    b.onclick=()=>{
+      show(b.dataset.view);
+    };
 
-document.getElementById("pickerOverlay")
-    .addEventListener("click", event => {
+  });
 
-        if(event.target.id === "pickerOverlay") {
-            closePicker();
-        }
 
-    });
+/* DAY NAVIGATION */
 
+document.getElementById('prev').onclick=()=>{
 
-document.getElementById("pickerPrevious")
-    .addEventListener("click", () => {
+  current.setDate(
+    current.getDate()-1
+  );
 
-        calendarMonth =
-            new Date(
-                calendarMonth.getFullYear(),
-                calendarMonth.getMonth()-1,
-                1
-            );
+  renderDay();
+  renderWeek();
 
-        renderPicker();
-    });
+};
 
 
-document.getElementById("pickerNext")
-    .addEventListener("click", () => {
+document.getElementById('next').onclick=()=>{
 
-        calendarMonth =
-            new Date(
-                calendarMonth.getFullYear(),
-                calendarMonth.getMonth()+1,
-                1
-            );
+  current.setDate(
+    current.getDate()+1
+  );
 
-        renderPicker();
-    });
+  renderDay();
+  renderWeek();
 
+};
 
-function renderPicker() {
 
-    let year =
-        calendarMonth.getFullYear();
+/* WEEK NAVIGATION */
 
-    let month =
-        calendarMonth.getMonth();
+document.getElementById('prevW').onclick=()=>{
 
-    document.getElementById("pickerTitle")
-        .textContent =
-            monthNames[month] + " " + year;
+  current.setDate(
+    current.getDate()-7
+  );
 
-    let weekdays =
-        document.getElementById("pickerWeekdays");
+  renderWeek();
+  renderDay();
 
-    weekdays.innerHTML =
-        weekdayNames
-            .map(day => `<span>${day}</span>`)
-            .join("");
+};
 
-    let container =
-        document.getElementById("pickerDays");
 
-    container.innerHTML = "";
+document.getElementById('nextW').onclick=()=>{
 
-    let firstDay =
-        new Date(year,month,1).getDay();
+  current.setDate(
+    current.getDate()+7
+  );
 
-    let days =
-        new Date(year,month+1,0).getDate();
+  renderWeek();
+  renderDay();
 
-    for(let i=0;i<firstDay;i++) {
+};
 
-        container.innerHTML +=
-            `<span></span>`;
-    }
 
-    for(let day=1;day<=days;day++) {
+/* MONTH NAVIGATION */
 
-        let date =
-            new Date(year,month,day);
+document.getElementById('prevM').onclick=()=>{
 
-        let dateKey =
-            key(date);
+  monthCursor.setMonth(
+    monthCursor.getMonth()-1
+  );
 
-        let selected =
-            dateKey === key(selectedDate)
-                ? "selected"
-                : "";
+  renderMonth();
 
-        let hasEvent =
-            eventsFor(date).length > 0;
+};
 
-        let button =
-            document.createElement("button");
 
-        button.className = selected;
+document.getElementById('nextM').onclick=()=>{
 
-        button.innerHTML =
-            day +
-            (hasEvent ? "<i></i>" : "");
+  monthCursor.setMonth(
+    monthCursor.getMonth()+1
+  );
 
-        button.onclick = () => {
+  renderMonth();
 
-            selectedDate = date;
+};
 
-            calendarMonth =
-                new Date(year,month,1);
 
-            closePicker();
+/* TODAY BUTTON */
 
-            render();
-        };
+document.getElementById('today').onclick=()=>{
 
-        container.appendChild(button);
-    }
-}
+  current=new Date();
 
+  current.setHours(0,0,0,0);
 
-/* =========================================================
-   EVENT DETAILS
-========================================================= */
+  monthCursor=
+    new Date(
+      current.getFullYear(),
+      current.getMonth(),
+      1
+    );
 
-function openEvent(index) {
+  show('day');
 
-    let event =
-        window.currentEvents[index];
+  render();
 
-    if(!event) return;
+};
 
-    let typeName =
-        event.type === "regular"
-            ? "Regular class"
-            : event.type === "weekly"
-            ? "Weekly class"
-            : event.type === "induction"
-            ? "Welcome & induction"
-            : "Additional class";
 
-    let typeBox =
-        document.getElementById("modalType");
+/* DATE PICKER */
 
-    typeBox.textContent = typeName;
+document.getElementById('pick').onclick=()=>{
 
-    typeBox.style.background =
-        event.type === "induction"
-            ? "#fff4df"
-            : event.type === "weekly"
-            ? "#edf7ef"
-            : event.type === "extra"
-            ? "#f0ecfa"
-            : "#e8f3fc";
+  let x=prompt(
+    'Enter a date (YYYY-MM-DD):',
+    dkey(current)
+  );
 
-    typeBox.style.color =
-        event.type === "induction"
-            ? "#8b641f"
-            : event.type === "weekly"
-            ? "#347044"
-            : event.type === "extra"
-            ? "#66529b"
-            : "#24689e";
 
-    document.getElementById("modalTitle")
-        .textContent = event.title;
+  if(
+    x &&
+    /^\d{4}-\d{2}-\d{2}$/.test(x)
+  ){
 
-    document.getElementById("modalDate")
-        .textContent =
-            longDate(
-                new Date(
-                    event.date + "T00:00:00"
-                )
-            );
+    current=parseKey(x);
 
-    document.getElementById("modalTime")
-        .innerHTML =
-            "◷ &nbsp;" +
-            prettyTime(event.start) +
-            " – " +
-            prettyTime(event.end);
+    monthCursor=
+      new Date(
+        current.getFullYear(),
+        current.getMonth(),
+        1
+      );
 
-    document.getElementById("modalRoom")
-        .innerHTML =
-            "⌖ &nbsp;" +
-            event.room;
+    renderDay();
+    renderWeek();
 
-    document.getElementById("modalDescription")
-        .textContent =
-            event.description;
+    show('day');
 
-    document.getElementById("eventOverlay")
-        .style.display = "flex";
-}
+  }
 
+};
 
-document.getElementById("closeModal")
-    .addEventListener("click", () => {
 
-        document.getElementById("eventOverlay")
-            .style.display = "none";
+/* CALENDAR ICON -> WEEK */
 
-    });
+document.getElementById('toWeek').onclick=()=>{
 
+  show('week');
 
-document.getElementById("eventOverlay")
-    .addEventListener("click", event => {
+};
 
-        if(event.target.id === "eventOverlay") {
 
-            document.getElementById("eventOverlay")
-                .style.display = "none";
-
-        }
-
-    });
-
-
-/* ESCAPE KEY */
-
-document.addEventListener("keydown", event => {
-
-    if(event.key === "Escape") {
-
-        closePicker();
-
-        document.getElementById("eventOverlay")
-            .style.display = "none";
-    }
-
-});
-
-
-/* INITIAL DISPLAY */
+/* INITIAL LOAD */
 
 render();
 
