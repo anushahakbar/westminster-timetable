@@ -1,385 +1,333 @@
- <!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>University Timetable</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University of Westminster Timetable</title>
 
 <style>
-:root {
-  --blue: #3d91d6;
-  --line: #d7d7d7;
-  --text: #333;
-}
-
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  background: #fff;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    background: white;
 }
-
-.page {
-  max-width: 900px;
-  margin: auto;
-}
-
-/* HEADER */
 
 header {
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 7px 10px;
-  border-bottom: 1px solid #ddd;
+    height: 75px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
 }
 
 .logo {
-  font-weight: 800;
-  font-size: 24px;
-  line-height: .9;
-  letter-spacing: -1.5px;
-  color: #111;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 0.9;
+    color: #111;
 }
 
 .logo span {
-  display: block;
+    display: block;
 }
 
 .menu {
-  border: 0;
-  background: var(--blue);
-  color: #fff;
-  border-radius: 5px;
-  font-size: 27px;
-  width: 46px;
-  height: 48px;
-  cursor: pointer;
+    background: #3d91d6;
+    border: none;
+    color: white;
+    width: 46px;
+    height: 46px;
+    border-radius: 5px;
+    font-size: 26px;
+    cursor: pointer;
 }
-
-/* BLUE TOOLBAR */
 
 .toolbar {
-  height: 54px;
-  background: var(--blue);
-  margin: 10px 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  border-radius: 5px 5px 0 0;
-}
-
-.tools {
-  display: flex;
-  gap: 11px;
+    height: 55px;
+    background: #3d91d6;
+    margin: 10px 10px 0;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
 }
 
 .tool {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  background: transparent;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
 }
 
-/* DATE */
-
-.daytitle {
-  margin: 0 10px;
-  padding: 9px 12px;
-  border: 1px solid var(--line);
-  border-top: 0;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
+.tools {
+    display: flex;
+    gap: 10px;
 }
 
-/* NAVIGATION */
-
-.nav {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 10px;
+.date {
+    margin: 0 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+    text-align: center;
+    font-weight: bold;
 }
 
-.nav button {
-  background: #fff;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  padding: 6px 14px;
-  cursor: pointer;
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px;
 }
 
-/* TIMELINE */
+.navigation button {
+    background: white;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 7px 15px;
+    cursor: pointer;
+}
 
 .timeline {
-  margin: 0 10px;
-  border: 1px solid var(--line);
-  position: relative;
-  min-height: 1200px;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      #fff 0,
-      #fff 49px,
-      #e7e7e7 50px
-    );
+    position: relative;
+    margin: 0 10px;
+    min-height: 1250px;
+    border: 1px solid #ddd;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            white 0px,
+            white 49px,
+            #ddd 50px
+        );
 }
 
 .hour {
-  height: 50px;
-  position: relative;
-  border-bottom: 1px dotted #ccc;
+    height: 50px;
+    border-bottom: 1px dotted #ccc;
+    position: relative;
 }
 
 .hour span {
-  position: absolute;
-  left: 5px;
-  top: 2px;
-  color: #377fb9;
-  font-size: 12px;
-  background: #fff;
-  padding-right: 4px;
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    font-size: 12px;
+    color: #377fb9;
+    background: white;
+    padding-right: 4px;
 }
-
-/* CLASS */
 
 .event {
-  position: absolute;
-  left: 82px;
-  right: 12px;
-  background: #6da9d7;
-  border-left: 5px solid #2e6f9f;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 2px;
-  box-shadow: 0 1px 2px #aaa;
-  font-size: 14px;
-  overflow: hidden;
+    position: absolute;
+    left: 85px;
+    right: 12px;
+    background: #6da9d7;
+    border-left: 5px solid #2e6f9f;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px #aaa;
+    font-size: 14px;
+    overflow: hidden;
 }
 
-.event b {
-  display: block;
-  margin-bottom: 3px;
+.event strong {
+    display: block;
+    margin-bottom: 4px;
 }
 
 .empty {
-  padding: 30px;
-  text-align: center;
-  color: #777;
+    text-align: center;
+    color: #777;
+    padding: 35px;
 }
 
 /* MENU */
 
 .menuPanel {
-  display: none;
-  position: fixed;
-  right: 12px;
-  top: 68px;
-  width: 240px;
-  background: #fff;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  box-shadow: 0 4px 14px #999;
-  z-index: 20;
+    display: none;
+    position: fixed;
+    right: 12px;
+    top: 68px;
+    width: 240px;
+    background: white;
+    border: 1px solid #aaa;
+    box-shadow: 0 4px 15px #999;
+    z-index: 50;
 }
 
 .menuPanel button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 0;
-  background: #fff;
-  padding: 14px 16px;
-  font-size: 15px;
-  cursor: pointer;
+    display: block;
+    width: 100%;
+    border: none;
+    background: white;
+    text-align: left;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 .menuPanel button:hover {
-  background: #eee;
+    background: #eee;
 }
 
 /* CALENDAR */
 
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.35);
-  z-index: 30;
-  padding: 20px;
-  overflow: auto;
+.calendarOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 100;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .calendar {
-  max-width: 900px;
-  margin: 30px auto;
-  background: #fff;
-  border-radius: 6px;
-  padding: 18px;
+    max-width: 950px;
+    margin: 25px auto;
+    background: white;
+    border-radius: 6px;
+    padding: 20px;
 }
 
-.calHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  gap: 8px;
+.calendarHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 20px;
 }
 
-.calHead button {
-  border: 1px solid #aaa;
-  background: #fff;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
+.calendarHeader button {
+    border: 1px solid #aaa;
+    background: white;
+    padding: 7px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.closeCalendar {
+    background: #3d91d6 !important;
+    color: white !important;
+    border-color: #3d91d6 !important;
 }
 
 .months {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .month {
-  border: 1px solid var(--line);
-  padding: 8px;
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
 .month h3 {
-  text-align: center;
-  margin: 3px 0 8px;
-  font-size: 15px;
+    text-align: center;
+    margin: 4px 0 10px;
 }
 
-.week {
-  display: grid;
-  grid-template-columns: repeat(7,1fr);
-  font-size: 11px;
-  color: #777;
-  text-align: center;
+.weekdays,
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.weekdays {
+    color: #777;
+    font-size: 11px;
 }
 
 .days {
-  display: grid;
-  grid-template-columns: repeat(7,1fr);
-  gap: 2px;
+    gap: 2px;
 }
 
 .days button {
-  border: 0;
-  background: #fff;
-  min-height: 28px;
-  cursor: pointer;
-  border-radius: 3px;
+    min-height: 29px;
+    border: none;
+    background: white;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .days button:hover {
-  background: #dfefff;
+    background: #e5f2fc;
 }
 
-.days .has {
-  font-weight: bold;
-  color: #17679f;
-  text-decoration: underline;
+.days .hasClass {
+    color: #17679f;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .days .today {
-  outline: 1px solid var(--blue);
+    outline: 2px solid #3d91d6;
 }
-
-.close {
-  background: var(--blue) !important;
-  color: #fff !important;
-  border-color: var(--blue) !important;
-}
-
-/* MOBILE */
 
 @media(max-width:650px) {
+    .months {
+        grid-template-columns: 1fr;
+    }
 
-  .months {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline {
-    min-height: 1200px;
-  }
-
-  .event {
-    left: 65px;
-    right: 5px;
-  }
-
-  .logo {
-    font-size: 21px;
-  }
+    .event {
+        left: 65px;
+        right: 5px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="page">
-
 <header>
 
-  <div class="logo">
-    <span>UNIVERSITY</span>
-    <span>OF</span>
-    <span>WESTMINSTER</span>
-  </div>
+    <div class="logo">
+        <span>UNIVERSITY</span>
+        <span>OF</span>
+        <span>WESTMINSTER</span>
+    </div>
 
-  <button class="menu" onclick="toggleMenu()">☰</button>
+    <button class="menu" onclick="toggleMenu()">☰</button>
 
 </header>
 
 
-<!-- BLUE TOOLBAR -->
-
 <div class="toolbar">
 
-  <div class="tools">
+    <div class="tools">
 
-    <button
-      class="tool"
-      onclick="changeDay(-1)"
-      title="Previous day">
-      ‹
+        <button class="tool" onclick="changeDay(-1)">
+            ‹
+        </button>
+
+        <button class="tool" onclick="openCalendar()">
+            ▦
+        </button>
+
+        <button class="tool" onclick="changeDay(1)">
+            ›
+        </button>
+
+    </div>
+
+    <button class="tool" onclick="goToday()">
+        ⌖
     </button>
-
-    <button
-      class="tool"
-      onclick="openCalendar()"
-      title="Calendar">
-      ▦
-    </button>
-
-    <button
-      class="tool"
-      onclick="changeDay(1)"
-      title="Next day">
-      ›
-    </button>
-
-  </div>
-
-  <button
-    class="tool"
-    onclick="goToday()"
-    title="Today">
-    ⌖
-  </button>
 
 </div>
 
@@ -388,840 +336,860 @@ header {
 
 <div id="menuPanel" class="menuPanel">
 
-  <button onclick="openCalendar();toggleMenu()">
-    Calendar
-  </button>
+    <button onclick="openCalendar(); toggleMenu()">
+        Calendar
+    </button>
 
-  <button onclick="goToday();toggleMenu()">
-    Today
-  </button>
+    <button onclick="goToday(); toggleMenu()">
+        Today
+    </button>
 
-  <button onclick="changeDay(-1);toggleMenu()">
-    Previous day
-  </button>
+    <button onclick="changeDay(-1); toggleMenu()">
+        Previous day
+    </button>
 
-  <button onclick="changeDay(1);toggleMenu()">
-    Next day
-  </button>
-
-</div>
-
-
-<!-- DATE -->
-
-<div id="daytitle" class="daytitle"></div>
-
-
-<!-- NAVIGATION -->
-
-<div class="nav">
-
-  <button onclick="changeDay(-1)">
-    ← Previous
-  </button>
-
-  <button onclick="goToday()">
-    Today
-  </button>
-
-  <button onclick="changeDay(1)">
-    Next →
-  </button>
+    <button onclick="changeDay(1); toggleMenu()">
+        Next day
+    </button>
 
 </div>
 
 
-<!-- TIMETABLE -->
+<div id="date" class="date"></div>
+
+
+<div class="navigation">
+
+    <button onclick="changeDay(-1)">
+        ← Previous
+    </button>
+
+    <button onclick="goToday()">
+        Today
+    </button>
+
+    <button onclick="changeDay(1)">
+        Next →
+    </button>
+
+</div>
+
 
 <div id="timeline" class="timeline"></div>
 
-</div>
 
+<!-- CALENDAR -->
 
-<!-- CALENDAR OVERLAY -->
+<div id="calendarOverlay" class="calendarOverlay">
 
-<div id="overlay" class="overlay">
+    <div class="calendar">
 
-  <div class="calendar">
+        <div class="calendarHeader">
 
-    <div class="calHead">
+            <button onclick="changeCalendarYear(-1)">
+                ← Year
+            </button>
 
-      <button onclick="calendarYear(-1)">
-        ← Year
-      </button>
+            <strong id="calendarYear"></strong>
 
-      <strong id="calYear"></strong>
+            <button onclick="changeCalendarYear(1)">
+                Year →
+            </button>
 
-      <button onclick="calendarYear(1)">
-        Year →
-      </button>
+            <button
+                class="closeCalendar"
+                onclick="closeCalendar()">
+                Close
+            </button>
 
-      <button
-        class="close"
-        onclick="closeCalendar()">
-        Close
-      </button>
+        </div>
+
+        <div id="months" class="months"></div>
 
     </div>
-
-    <div id="months" class="months"></div>
-
-  </div>
 
 </div>
 
 
 <script>
 
-/* ==========================================
-   EXTRA RANDOM CLASSES
-   ========================================== */
+/* =====================================================
+   OCCASIONAL EXTRA CLASSES
+   ===================================================== */
 
 const extraEvents = {
 
-  "2026-09-15": [
-    ["Course Introduction", 14, 15]
-  ],
+    "2026-09-15": [
+        ["Course Introduction", 14, 15]
+    ],
 
-  "2026-09-22": [
-    ["Tutorial", 10, 11]
-  ],
+    "2026-09-29": [
+        ["Academic Skills Workshop", 10, 12]
+    ],
 
-  "2026-09-30": [
-    ["Study Skills", 11, 12]
-  ],
+    "2026-10-06": [
+        ["Library Induction", 11, 12]
+    ],
 
-  "2026-10-06": [
-    ["Workshop", 10, 12]
-  ],
+    "2026-10-20": [
+        ["Tutorial", 9, 10]
+    ],
 
-  "2026-10-20": [
-    ["Tutorial", 9, 10]
-  ],
+    "2026-10-30": [
+        ["Guest Lecture", 13, 14.5]
+    ],
 
-  "2026-11-03": [
-    ["Guest Lecture", 11, 12]
-  ],
+    "2026-11-03": [
+        ["Research Methods Workshop", 10, 12]
+    ],
 
-  "2026-11-12": [
-    ["Study Skills", 10, 12]
-  ],
+    "2026-11-17": [
+        ["Tutorial", 11, 12]
+    ],
 
-  "2026-11-26": [
-    ["Workshop", 13, 16]
-  ]
+    "2026-11-27": [
+        ["Study Skills Session", 14, 15.5]
+    ],
+
+    "2026-12-01": [
+        ["Revision Workshop", 10, 12]
+    ],
+
+    "2026-12-08": [
+        ["Final Lecture Preparation", 11, 12]
+    ]
 
 };
 
 
-/* ==========================================
-   WELCOME & INDUCTION
-   ========================================== */
+/* =====================================================
+   SPECIAL EVENTS
+   ===================================================== */
+
+/*
+   17 SEPTEMBER:
+   Welcome & Induction
+   3 PM → 4 PM ONLY
+*/
 
 const fixedEvents = {
 
-  "2026-09-17": [
-    ["Welcome & Induction", 10, 12]
-  ]
+    "2026-09-17": [
+        ["Welcome & Induction", 15, 16]
+    ]
 
 };
 
 
-/* ==========================================
-   MIDWEEK CLASSES
-   ==========================================
+/* =====================================================
+   WEEKLY WEDNESDAY / THURSDAY CLASSES
+   =====================================================
 
-   These alternate between Wednesday
+   These deliberately move between Wednesday
    and Thursday.
 
    Some finish at 5:30 PM.
-   ========================================== */
+   ===================================================== */
 
 const midweek = {
 
-  /* SEPTEMBER */
+    /* SEPTEMBER */
 
-  "2026-09-17": [
-    ["Welcome & Induction", 10, 12]
-  ],
+    "2026-09-23": [
+        ["Seminar", 14, 17]
+    ],
 
-  "2026-09-23": [
-    ["Seminar", 14, 17]
-  ],
-
-
-  /* OCTOBER */
-
-  "2026-10-01": [
-    ["Seminar", 14, 17.5]
-  ],
-
-  "2026-10-08": [
-    ["Seminar", 14, 17]
-  ],
-
-  "2026-10-14": [
-    ["Seminar", 14, 17.5]
-  ],
-
-  "2026-10-22": [
-    ["Seminar", 14, 17]
-  ],
-
-  "2026-10-28": [
-    ["Seminar", 14, 17.5]
-  ],
+    "2026-10-01": [
+        ["Seminar", 14, 17.5]
+    ],
 
 
-  /* NOVEMBER */
+    /* OCTOBER */
 
-  "2026-11-05": [
-    ["Seminar", 14, 17]
-  ],
+    "2026-10-07": [
+        ["Seminar", 14, 17]
+    ],
 
-  "2026-11-11": [
-    ["Seminar", 14, 17.5]
-  ],
+    "2026-10-15": [
+        ["Seminar", 14, 17.5]
+    ],
 
-  "2026-11-19": [
-    ["Seminar", 14, 17]
-  ],
+    "2026-10-21": [
+        ["Seminar", 14, 17]
+    ],
 
-  "2026-11-25": [
-    ["Seminar", 14, 17.5]
-  ],
+    "2026-10-29": [
+        ["Seminar", 14, 17.5]
+    ],
 
 
-  /* DECEMBER */
+    /* NOVEMBER */
 
-  "2026-12-03": [
-    ["Seminar", 14, 17]
-  ],
+    "2026-11-04": [
+        ["Seminar", 14, 17]
+    ],
 
-  "2026-12-09": [
-    ["Seminar", 14, 17.5]
-  ]
+    "2026-11-12": [
+        ["Seminar", 14, 17.5]
+    ],
+
+    "2026-11-18": [
+        ["Seminar", 14, 17]
+    ],
+
+    "2026-11-26": [
+        ["Seminar", 14, 17.5]
+    ],
+
+
+    /* DECEMBER */
+
+    "2026-12-02": [
+        ["Seminar", 14, 17]
+    ],
+
+    "2026-12-10": [
+        ["Seminar", 14, 17.5]
+    ]
 
 };
 
 
-/* ==========================================
-   NO TEACHING PERIOD
-   ========================================== */
+/* =====================================================
+   WINTER BREAK + EXAM PERIOD
+   ===================================================== */
 
 const noTeachingStart =
-  new Date(2026, 11, 12);
+    new Date(2026, 11, 12);
 
 const noTeachingEnd =
-  new Date(2027, 0, 15);
+    new Date(2027, 0, 15);
 
 
-/* ==========================================
-   DATE HELPERS
-   ========================================== */
+/* =====================================================
+   DATE FUNCTIONS
+   ===================================================== */
 
-function key(d) {
+function getKey(date) {
 
-  return d.getFullYear()
-    + "-"
-    + String(d.getMonth() + 1).padStart(2, "0")
-    + "-"
-    + String(d.getDate()).padStart(2, "0");
-
-}
-
-
-function localToday() {
-
-  const d = new Date();
-
-  return new Date(
-    d.getFullYear(),
-    d.getMonth(),
-    d.getDate()
-  );
+    return date.getFullYear()
+        + "-"
+        + String(date.getMonth() + 1).padStart(2, "0")
+        + "-"
+        + String(date.getDate()).padStart(2, "0");
 
 }
 
 
-let selectedDate = localToday();
+function getToday() {
+
+    const now = new Date();
+
+    return new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+
+}
+
+
+let selectedDate = getToday();
 
 let calendarYearValue =
-  selectedDate.getFullYear();
+    selectedDate.getFullYear();
 
 
-/* ==========================================
-   CHECK HOLIDAY / EXAM PERIOD
-   ========================================== */
+/* =====================================================
+   CHECK IF DATE IS HOLIDAY / EXAM PERIOD
+   ===================================================== */
 
-function inNoTeaching(d) {
+function isNoTeaching(date) {
 
-  return (
-    d >= noTeachingStart &&
-    d <= noTeachingEnd
-  );
-
-}
-
-
-/* ==========================================
-   GET CLASSES FOR A DAY
-   ========================================== */
-
-function getEvents(d) {
-
-  const k = key(d);
-
-  /*
-     During the winter vacation and exam period
-     everything stays empty.
-  */
-
-  if (inNoTeaching(d)) {
-    return [];
-  }
-
-
-  let out = [];
-
-
-  /* Fixed classes */
-
-  if (fixedEvents[k]) {
-    out.push(...fixedEvents[k]);
-  }
-
-
-  /* Random classes */
-
-  if (extraEvents[k]) {
-    out.push(...extraEvents[k]);
-  }
-
-
-  /* Wednesday / Thursday classes */
-
-  if (midweek[k]) {
-    out.push(...midweek[k]);
-  }
-
-
-  /*
-     MONDAY IS ALWAYS CONSISTENT:
-     3:00 PM → 5:00 PM
-  */
-
-  if (d.getDay() === 1) {
-
-    out.push([
-      "Lecture",
-      15,
-      17
-    ]);
-
-  }
-
-
-  /*
-     Any Thursday without a specifically
-     assigned midweek class gets a normal
-     2 PM → 5 PM seminar.
-  */
-
-  if (
-    d.getDay() === 4 &&
-    !midweek[k] &&
-    !fixedEvents[k]
-  ) {
-
-    out.push([
-      "Seminar",
-      14,
-      17
-    ]);
-
-  }
-
-
-  return out;
+    return (
+        date >= noTeachingStart &&
+        date <= noTeachingEnd
+    );
 
 }
 
 
-/* ==========================================
-   FORMAT DATE
-   ========================================== */
+/* =====================================================
+   GET EVENTS
+   ===================================================== */
 
-function fmtDate(d) {
+function getEvents(date) {
 
-  return d.toLocaleDateString(
-    undefined,
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric"
+    const key = getKey(date);
+
+    /*
+       Nothing happens during the
+       winter break / exam period.
+    */
+
+    if (isNoTeaching(date)) {
+        return [];
     }
-  );
-
-}
 
 
-/* ==========================================
-   FORMAT TIME
-   ========================================== */
-
-function timeLabel(h) {
-
-  const hr = Math.floor(h);
-
-  const mins =
-    Math.round((h - hr) * 60);
-
-  const ap =
-    hr >= 12 ? "PM" : "AM";
-
-  const x =
-    hr % 12 || 12;
-
-  return (
-    x +
-    (mins
-      ? ":" + String(mins).padStart(2, "0")
-      : ""
-    )
-    + " "
-    + ap
-  );
-
-}
+    let events = [];
 
 
-/* ==========================================
-   RENDER TIMETABLE
-   ========================================== */
+    /* Special events */
 
-function render() {
+    if (fixedEvents[key]) {
 
-  document.getElementById("daytitle")
-    .textContent = fmtDate(selectedDate);
+        events.push(
+            ...fixedEvents[key]
+        );
 
-
-  const tl =
-    document.getElementById("timeline");
-
-  tl.innerHTML = "";
+    }
 
 
-  /*
-     Display 8 AM → 8 PM
-  */
+    /* Random extra classes */
 
-  for (let h = 8; h <= 20; h++) {
+    if (extraEvents[key]) {
 
-    const row =
-      document.createElement("div");
+        events.push(
+            ...extraEvents[key]
+        );
 
-    row.className = "hour";
-
-    row.style.height = "50px";
+    }
 
 
-    const s =
-      document.createElement("span");
+    /* Wednesday / Thursday class */
 
-    s.textContent =
-      timeLabel(h);
+    if (midweek[key]) {
 
+        events.push(
+            ...midweek[key]
+        );
 
-    row.appendChild(s);
-
-    tl.appendChild(row);
-
-  }
-
-
-  const events =
-    getEvents(selectedDate);
-
-
-  /*
-     Draw each class
-  */
-
-  events.forEach(e => {
-
-    const [
-      name,
-      start,
-      end
-    ] = e;
-
-
-    const div =
-      document.createElement("div");
-
-    div.className = "event";
+    }
 
 
     /*
-       50 pixels = one hour.
-       Timeline starts at 8 AM.
+       EVERY MONDAY:
+       3 PM → 5 PM
     */
 
-    div.style.top =
-      ((start - 8) * 50) + "px";
+    if (date.getDay() === 1) {
+
+        events.push([
+            "Lecture",
+            15,
+            17
+        ]);
+
+    }
 
 
-    div.style.height =
-      Math.max(
-        (end - start) * 50 - 4,
-        35
-      ) + "px";
-
-
-    div.innerHTML =
-      "<b>"
-      + name
-      + "</b>"
-      + timeLabel(start)
-      + " – "
-      + timeLabel(end);
-
-
-    tl.appendChild(div);
-
-  });
-
-
-  /*
-     Empty day
-  */
-
-  if (!events.length) {
-
-    const x =
-      document.createElement("div");
-
-    x.className = "empty";
-
-
-    x.textContent =
-      inNoTeaching(selectedDate)
-        ? "No scheduled teaching"
-        : "No scheduled classes";
-
-
-    tl.appendChild(x);
-
-  }
+    return events;
 
 }
 
 
-/* ==========================================
+/* =====================================================
+   DATE DISPLAY
+   ===================================================== */
+
+function formatDate(date) {
+
+    return date.toLocaleDateString(
+        undefined,
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   TIME DISPLAY
+   ===================================================== */
+
+function formatTime(hour) {
+
+    const wholeHour =
+        Math.floor(hour);
+
+    const minutes =
+        Math.round(
+            (hour - wholeHour) * 60
+        );
+
+    const ampm =
+        wholeHour >= 12
+            ? "PM"
+            : "AM";
+
+    const displayHour =
+        wholeHour % 12 || 12;
+
+    return displayHour
+        + (
+            minutes
+                ? ":" + String(minutes).padStart(2, "0")
+                : ""
+        )
+        + " "
+        + ampm;
+
+}
+
+
+/* =====================================================
+   RENDER TIMETABLE
+   ===================================================== */
+
+function render() {
+
+    document.getElementById("date")
+        .textContent =
+        formatDate(selectedDate);
+
+
+    const timeline =
+        document.getElementById("timeline");
+
+    timeline.innerHTML = "";
+
+
+    /*
+       Timetable from 8 AM to 8 PM
+    */
+
+    for (
+        let hour = 8;
+        hour <= 20;
+        hour++
+    ) {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "hour";
+
+
+        const label =
+            document.createElement("span");
+
+        label.textContent =
+            formatTime(hour);
+
+
+        row.appendChild(label);
+
+        timeline.appendChild(row);
+
+    }
+
+
+    const events =
+        getEvents(selectedDate);
+
+
+    /* Draw classes */
+
+    events.forEach(event => {
+
+        const name = event[0];
+        const start = event[1];
+        const end = event[2];
+
+
+        const box =
+            document.createElement("div");
+
+        box.className = "event";
+
+
+        /*
+           Timeline starts at 8 AM.
+           One hour = 50 pixels.
+        */
+
+        box.style.top =
+            ((start - 8) * 50)
+            + "px";
+
+
+        box.style.height =
+            Math.max(
+                ((end - start) * 50) - 4,
+                35
+            )
+            + "px";
+
+
+        box.innerHTML =
+            "<strong>"
+            + name
+            + "</strong>"
+            + formatTime(start)
+            + " – "
+            + formatTime(end);
+
+
+        timeline.appendChild(box);
+
+    });
+
+
+    /* Empty day */
+
+    if (events.length === 0) {
+
+        const empty =
+            document.createElement("div");
+
+        empty.className = "empty";
+
+
+        if (isNoTeaching(selectedDate)) {
+
+            empty.textContent =
+                "No scheduled teaching";
+
+        } else {
+
+            empty.textContent =
+                "No scheduled classes";
+
+        }
+
+
+        timeline.appendChild(empty);
+
+    }
+
+}
+
+
+/* =====================================================
    DAY NAVIGATION
-   ========================================== */
+   ===================================================== */
 
-function changeDay(n) {
+function changeDay(amount) {
 
-  selectedDate.setDate(
-    selectedDate.getDate() + n
-  );
+    selectedDate.setDate(
+        selectedDate.getDate() + amount
+    );
 
-  render();
+    render();
 
 }
 
 
 function goToday() {
 
-  selectedDate = localToday();
+    selectedDate = getToday();
 
-  calendarYearValue =
-    selectedDate.getFullYear();
+    calendarYearValue =
+        selectedDate.getFullYear();
 
-  render();
+    render();
 
 }
 
 
-/* ==========================================
+/* =====================================================
    HAMBURGER MENU
-   ========================================== */
+   ===================================================== */
 
 function toggleMenu() {
 
-  const p =
-    document.getElementById("menuPanel");
+    const menu =
+        document.getElementById("menuPanel");
 
 
-  p.style.display =
-    p.style.display === "block"
-      ? "none"
-      : "block";
+    if (
+        menu.style.display === "block"
+    ) {
+
+        menu.style.display = "none";
+
+    } else {
+
+        menu.style.display = "block";
+
+    }
 
 }
 
 
-/* ==========================================
-   OPEN CALENDAR
-   ========================================== */
+/* =====================================================
+   CALENDAR
+   ===================================================== */
 
 function openCalendar() {
 
-  calendarYearValue =
-    selectedDate.getFullYear();
+    calendarYearValue =
+        selectedDate.getFullYear();
 
-  document.getElementById("overlay")
-    .style.display = "block";
 
-  renderCalendar();
+    document.getElementById(
+        "calendarOverlay"
+    ).style.display = "block";
+
+
+    renderCalendar();
 
 }
 
 
 function closeCalendar() {
 
-  document.getElementById("overlay")
-    .style.display = "none";
+    document.getElementById(
+        "calendarOverlay"
+    ).style.display = "none";
 
 }
 
 
-function calendarYear(n) {
+function changeCalendarYear(amount) {
 
-  calendarYearValue += n;
+    calendarYearValue += amount;
 
-  renderCalendar();
+    renderCalendar();
 
 }
 
 
-/* ==========================================
-   YEAR CALENDAR
-   ========================================== */
+/* =====================================================
+   RENDER YEAR CALENDAR
+   ===================================================== */
 
 function renderCalendar() {
 
-  document.getElementById("calYear")
-    .textContent = calendarYearValue;
+    document.getElementById(
+        "calendarYear"
+    ).textContent =
+        calendarYearValue;
 
 
-  const months =
-    document.getElementById("months");
+    const months =
+        document.getElementById("months");
 
-  months.innerHTML = "";
-
-
-  /*
-     Display all 12 months.
-  */
-
-  for (let m = 0; m < 12; m++) {
-
-    const box =
-      document.createElement("div");
-
-    box.className = "month";
-
-
-    const h =
-      document.createElement("h3");
-
-    h.textContent =
-      new Date(
-        calendarYearValue,
-        m,
-        1
-      ).toLocaleDateString(
-        undefined,
-        { month: "long" }
-      );
-
-
-    box.appendChild(h);
-
-
-    /*
-       Weekday headings
-       Monday → Sunday
-    */
-
-    const week =
-      document.createElement("div");
-
-    week.className = "week";
-
-
-    [
-      "M",
-      "T",
-      "W",
-      "T",
-      "F",
-      "S",
-      "S"
-    ].forEach(x => {
-
-      const s =
-        document.createElement("span");
-
-      s.textContent = x;
-
-      week.appendChild(s);
-
-    });
-
-
-    box.appendChild(week);
-
-
-    const days =
-      document.createElement("div");
-
-    days.className = "days";
-
-
-    /*
-       Find first weekday
-    */
-
-    const first =
-      new Date(
-        calendarYearValue,
-        m,
-        1
-      );
-
-
-    let offset =
-      (first.getDay() + 6) % 7;
-
-
-    /*
-       Empty spaces before
-       first day of month.
-    */
-
-    for (
-      let i = 0;
-      i < offset;
-      i++
-    ) {
-
-      days.appendChild(
-        document.createElement("span")
-      );
-
-    }
-
-
-    /*
-       Number of days in month
-    */
-
-    const count =
-      new Date(
-        calendarYearValue,
-        m + 1,
-        0
-      ).getDate();
+    months.innerHTML = "";
 
 
     for (
-      let day = 1;
-      day <= count;
-      day++
+        let month = 0;
+        month < 12;
+        month++
     ) {
 
-      const d =
-        new Date(
-          calendarYearValue,
-          m,
-          day
-        );
+        const monthBox =
+            document.createElement("div");
+
+        monthBox.className = "month";
 
 
-      const b =
-        document.createElement("button");
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            new Date(
+                calendarYearValue,
+                month,
+                1
+            ).toLocaleDateString(
+                undefined,
+                {
+                    month: "long"
+                }
+            );
 
 
-      b.textContent = day;
+        monthBox.appendChild(title);
 
 
-      /*
-         Highlight dates with classes.
-      */
+        /*
+           Weekdays
+        */
 
-      if (getEvents(d).length) {
+        const weekdays =
+            document.createElement("div");
 
-        b.classList.add("has");
-
-      }
-
-
-      /*
-         Highlight today's date.
-      */
-
-      if (
-        key(d) ===
-        key(localToday())
-      ) {
-
-        b.classList.add("today");
-
-      }
+        weekdays.className =
+            "weekdays";
 
 
-      /*
-         Highlight selected date.
-      */
+        [
+            "M",
+            "T",
+            "W",
+            "T",
+            "F",
+            "S",
+            "S"
+        ].forEach(day => {
 
-      if (
-        key(d) ===
-        key(selectedDate)
-      ) {
+            const span =
+                document.createElement("span");
 
-        b.style.background =
-          "#dfefff";
+            span.textContent = day;
 
-      }
+            weekdays.appendChild(span);
 
-
-      /*
-         Clicking a date opens that day.
-      */
-
-      b.onclick = () => {
-
-        selectedDate = d;
-
-        closeCalendar();
-
-        render();
-
-      };
+        });
 
 
-      days.appendChild(b);
+        monthBox.appendChild(weekdays);
+
+
+        /*
+           Days
+        */
+
+        const days =
+            document.createElement("div");
+
+        days.className = "days";
+
+
+        const firstDay =
+            new Date(
+                calendarYearValue,
+                month,
+                1
+            );
+
+
+        /*
+           Convert Sunday-first JavaScript
+           dates into Monday-first calendar.
+        */
+
+        const offset =
+            (firstDay.getDay() + 6) % 7;
+
+
+        for (
+            let i = 0;
+            i < offset;
+            i++
+        ) {
+
+            days.appendChild(
+                document.createElement("span")
+            );
+
+        }
+
+
+        const numberOfDays =
+            new Date(
+                calendarYearValue,
+                month + 1,
+                0
+            ).getDate();
+
+
+        for (
+            let day = 1;
+            day <= numberOfDays;
+            day++
+        ) {
+
+            const date =
+                new Date(
+                    calendarYearValue,
+                    month,
+                    day
+                );
+
+
+            const button =
+                document.createElement("button");
+
+
+            button.textContent = day;
+
+
+            /*
+               Dates with classes
+            */
+
+            if (
+                getEvents(date).length > 0
+            ) {
+
+                button.classList.add(
+                    "hasClass"
+                );
+
+            }
+
+
+            /*
+               Today's date
+            */
+
+            if (
+                getKey(date) ===
+                getKey(getToday())
+            ) {
+
+                button.classList.add(
+                    "today"
+                );
+
+            }
+
+
+            /*
+               Currently selected date
+            */
+
+            if (
+                getKey(date) ===
+                getKey(selectedDate)
+            ) {
+
+                button.style.background =
+                    "#dfefff";
+
+            }
+
+
+            /*
+               Click date
+            */
+
+            button.onclick = function() {
+
+                selectedDate = date;
+
+                closeCalendar();
+
+                render();
+
+            };
+
+
+            days.appendChild(button);
+
+        }
+
+
+        monthBox.appendChild(days);
+
+        months.appendChild(monthBox);
 
     }
-
-
-    box.appendChild(days);
-
-    months.appendChild(box);
-
-  }
 
 }
 
 
-/* ==========================================
-   START TIMETABLE
-   ========================================== */
+/* =====================================================
+   START
+   ===================================================== */
 
 render();
 
