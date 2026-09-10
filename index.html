@@ -254,7 +254,9 @@ body{
 }
 
 
-/* WEEK */
+/* =========================
+   WEEK VIEW
+========================= */
 
 .weekwrap{
   overflow:auto;
@@ -324,7 +326,10 @@ body{
 }
 
 
-/* MONTH */
+/* =========================
+   MONTH VIEW
+   TEXT INSTEAD OF COLOURED DOTS
+========================= */
 
 .monthhead{
   display:grid;
@@ -374,28 +379,33 @@ body{
   color:#fff;
 }
 
+/* THIS IS THE ONLY CHANGED CALENDAR EVENT STYLE */
+
 .pill{
-  padding:4px 5px;
+  padding:3px 0;
   margin:3px 0;
-  border-radius:3px;
-  color:#fff;
-  background:var(--blue);
-  font-size:10px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  color:#358bd0;
+  background:transparent;
+  font-size:11px;
+  font-weight:700;
+  white-space:normal;
+  overflow:visible;
 }
 
 .pill.induction{
-  background:#6e8ba8;
+  color:#526c86;
+  background:transparent;
 }
 
 .pill.extra{
-  background:#687b8d;
+  color:#52616f;
+  background:transparent;
 }
 
 
-/* SEMESTER */
+/* =========================
+   SEMESTER VIEW
+========================= */
 
 .sem{
   padding:15px;
@@ -446,7 +456,9 @@ body{
 }
 
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:650px){
 
@@ -487,6 +499,7 @@ body{
   .semrow .tag{
     display:none;
   }
+
 }
 </style>
 </head>
@@ -500,12 +513,17 @@ body{
     WESTMINSTER<small>▦</small>
   </div>
 
-  <button class="menu">≡</button>
+  <button class="menu">
+    ≡
+  </button>
 
 </header>
 
 
 <main class="app">
+
+
+  <!-- VIEW BUTTONS -->
 
   <div class="toolbar">
 
@@ -532,7 +550,10 @@ body{
   </div>
 
 
-  <!-- DAY VIEW -->
+
+  <!-- =========================
+       DAY VIEW
+  ========================= -->
 
   <section id="day">
 
@@ -552,6 +573,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small" id="toWeek">
@@ -566,7 +588,9 @@ body{
 
       </div>
 
+
       <div class="datebar" id="dayDate"></div>
+
 
       <div class="daygrid">
 
@@ -581,7 +605,10 @@ body{
   </section>
 
 
-  <!-- WEEK VIEW -->
+
+  <!-- =========================
+       WEEK VIEW
+  ========================= -->
 
   <section id="week" class="hidden">
 
@@ -601,6 +628,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small">
@@ -615,6 +643,7 @@ body{
 
       </div>
 
+
       <div class="week" id="weekGrid"></div>
 
     </div>
@@ -622,7 +651,10 @@ body{
   </section>
 
 
-  <!-- MONTH VIEW -->
+
+  <!-- =========================
+       MONTH VIEW
+  ========================= -->
 
   <section id="month" class="hidden">
 
@@ -642,6 +674,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small">
@@ -656,9 +689,12 @@ body{
 
       </div>
 
+
       <div class="datebar" id="monthTitle"></div>
 
+
       <div class="monthhead" id="monthHead"></div>
+
 
       <div class="monthgrid" id="monthGrid"></div>
 
@@ -667,7 +703,10 @@ body{
   </section>
 
 
-  <!-- SEMESTER VIEW -->
+
+  <!-- =========================
+       SEMESTER VIEW
+  ========================= -->
 
   <section id="semester" class="hidden">
 
@@ -676,12 +715,15 @@ body{
       <div class="bluebar">
 
         <div class="side">
+
           <button class="circle small">
             ▦
           </button>
+
         </div>
 
       </div>
+
 
       <div class="sem" id="semesterList"></div>
 
@@ -690,6 +732,9 @@ body{
   </section>
 
 
+
+  <!-- FOOTER -->
+
   <div class="footer">
 
     <div class="update">
@@ -697,15 +742,18 @@ body{
       September 2026
     </div>
 
+
     <div class="cmis">
       cmis<span>go</span><i>●</i>
     </div>
+
 
     <div>
       Accessibility statement
       &nbsp;&nbsp;&nbsp;
       About
     </div>
+
 
     <div class="copy">
       © Copyright - Advanced Computer Software Group Ltd All Rights Reserved.<br>
@@ -717,20 +765,22 @@ body{
 </main>
 
 
+
 <script>
 
 /* =========================================================
-   IMPORTANT:
-   THE TIMETABLE OPENS ON THE ACTUAL CURRENT DATE.
-   ========================================================= */
+   SEMESTER DATES
+========================================================= */
 
 const start = new Date(2026,8,17);
 
-// Semester end
 const regularEnd = new Date(2026,11,18);
 
 
-/* OCCASIONAL EXTRA CLASSES */
+
+/* =========================================================
+   OCCASIONAL EXTRA CLASSES
+========================================================= */
 
 const extraEvents = [
 
@@ -753,7 +803,10 @@ const extraEvents = [
 ];
 
 
-/* HELPERS */
+
+/* =========================================================
+   DATE HELPERS
+========================================================= */
 
 function dkey(d){
 
@@ -785,7 +838,10 @@ function fmt(
   }
 ){
 
-  return d.toLocaleDateString('en-GB',opt);
+  return d.toLocaleDateString(
+    'en-GB',
+    opt
+  );
 
 }
 
@@ -810,7 +866,10 @@ function clock(h){
 }
 
 
-/* GET EVENTS FOR A DATE */
+
+/* =========================================================
+   EVENTS FOR EACH DATE
+========================================================= */
 
 function eventsFor(d){
 
@@ -819,23 +878,31 @@ function eventsFor(d){
   const out=[];
 
 
-  /* ONLY EVENT ON 17 SEPTEMBER */
+  /*
+     17 SEPTEMBER:
+     ONLY WELCOME & INDUCTION
+  */
 
   if(key==='2026-09-17'){
 
     out.push({
+
       start:'15:00',
+
       end:'16:00',
+
       title:'Welcome & Induction',
+
       type:'induction'
+
     });
 
   }
 
 
+
   /*
-     REGULAR CLASSES ONLY START AFTER
-     17 SEPTEMBER
+     REGULAR CLASSES BEGIN AFTER 17 SEPTEMBER
   */
 
   if(d>start && d<=regularEnd){
@@ -843,51 +910,79 @@ function eventsFor(d){
     const dow=d.getDay();
 
 
-    /* EVERY MONDAY 3–5 */
+
+    /*
+       EVERY MONDAY
+       3PM–5PM
+    */
 
     if(dow===1){
 
       out.push({
+
         start:'15:00',
+
         end:'17:00',
+
         title:'Regular class',
+
         type:'regular'
+
       });
 
     }
 
 
-    /*
-       WEDNESDAY / THURSDAY CLASSES
 
-       They alternate naturally.
+    /*
+       WEDNESDAY
+       2PM–5PM OR OCCASIONALLY 5:30PM
     */
 
     if(dow===3){
 
       out.push({
+
         start:'14:00',
+
         end:
-          Math.floor((d.getDate()+d.getMonth())/3)%3===0
+          Math.floor(
+            (d.getDate()+d.getMonth())/3
+          )%3===0
             ? '17:30'
             : '17:00',
+
         title:'Regular class',
+
         type:'regular'
+
       });
 
     }
 
 
+
+    /*
+       SOME THURSDAYS
+    */
+
     if(
       dow===4 &&
-      Math.floor((d.getDate()+d.getMonth())/3)%2===0
+      Math.floor(
+        (d.getDate()+d.getMonth())/3
+      )%2===0
     ){
 
       out.push({
+
         start:'14:00',
+
         end:'17:00',
+
         title:'Regular class',
+
         type:'regular'
+
       });
 
     }
@@ -895,17 +990,25 @@ function eventsFor(d){
   }
 
 
-  /* EXTRA CLASSES */
+
+  /*
+     EXTRA CLASSES
+  */
 
   extraEvents.forEach(e=>{
 
     if(e[0]===key){
 
       out.push({
+
         start:e[1],
+
         end:e[2],
+
         title:e[3],
+
         type:e[4]
+
       });
 
     }
@@ -918,16 +1021,16 @@ function eventsFor(d){
 }
 
 
-/*
-   THIS IS THE IMPORTANT PART:
 
-   When the website opens, it uses today's
-   actual date instead of a fixed date.
-*/
+/* =========================================================
+   IMPORTANT:
+   OPEN ON THE REAL CURRENT DATE
+========================================================= */
 
 let current=new Date();
 
 current.setHours(0,0,0,0);
+
 
 let monthCursor=new Date(
   current.getFullYear(),
@@ -936,17 +1039,24 @@ let monthCursor=new Date(
 );
 
 
+
 const hours=[
-  8,9,10,11,12,13,14,15,
-  16,17,18,19,20,21
+  8,9,10,11,12,13,14,
+  15,16,17,18,19,20,21
 ];
 
 
-/* DAY VIEW */
+
+/* =========================================================
+   DAY VIEW
+========================================================= */
 
 function renderDay(){
 
-  document.getElementById('dayDate').textContent=
+  document.getElementById(
+    'dayDate'
+  ).textContent=
+
     fmt(
       current,
       {
@@ -958,7 +1068,9 @@ function renderDay(){
     );
 
 
-  document.getElementById('times').innerHTML=
+  document.getElementById(
+    'times'
+  ).innerHTML=
 
     hours.map(h=>`
 
@@ -972,7 +1084,9 @@ function renderDay(){
   const ev=eventsFor(current);
 
 
-  document.getElementById('hours').innerHTML=
+  document.getElementById(
+    'hours'
+  ).innerHTML=
 
     ev.length
 
@@ -982,6 +1096,7 @@ function renderDay(){
 
         const top=
           (timeMin(e.start)-8*60)*2;
+
 
         const height=
           (timeMin(e.end)-timeMin(e.start))*2;
@@ -997,7 +1112,9 @@ function renderDay(){
             "
           >
 
-            <b>${e.title}</b>
+            <b>
+              ${e.title}
+            </b>
 
             <span>
               ${e.start}–${e.end}
@@ -1016,11 +1133,15 @@ function renderDay(){
 }
 
 
-/* WEEK VIEW */
+
+/* =========================================================
+   WEEK VIEW
+========================================================= */
 
 function renderWeek(){
 
   let monday=new Date(current);
+
 
   monday.setDate(
     current.getDate()-
@@ -1029,8 +1150,8 @@ function renderWeek(){
 
 
   const names=[
-    'Mon','Tue','Wed','Thu',
-    'Fri','Sat','Sun'
+    'Mon','Tue','Wed',
+    'Thu','Fri','Sat','Sun'
   ];
 
 
@@ -1042,7 +1163,9 @@ function renderWeek(){
 
     let x=new Date(monday);
 
-    x.setDate(monday.getDate()+i);
+    x.setDate(
+      monday.getDate()+i
+    );
 
 
     return `
@@ -1052,11 +1175,14 @@ function renderWeek(){
         ${n}
 
         <span>
+
           ${x.getDate()}
+
           ${x.toLocaleDateString(
             'en-GB',
             {month:'short'}
           )}
+
         </span>
 
       </div>
@@ -1081,11 +1207,14 @@ function renderWeek(){
     '</div>';
 
 
+
   for(let i=0;i<7;i++){
 
     let x=new Date(monday);
 
-    x.setDate(monday.getDate()+i);
+    x.setDate(
+      monday.getDate()+i
+    );
 
 
     let ev=eventsFor(x);
@@ -1099,6 +1228,7 @@ function renderWeek(){
 
           let top=
             (timeMin(e.start)-480)*2;
+
 
           let h=
             (timeMin(e.end)-timeMin(e.start))*2;
@@ -1114,7 +1244,9 @@ function renderWeek(){
               "
             >
 
-              <b>${e.title}</b>
+              <b>
+                ${e.title}
+              </b>
 
               <span>
                 ${e.start}–${e.end}
@@ -1133,17 +1265,23 @@ function renderWeek(){
   }
 
 
-  document.getElementById('weekGrid').innerHTML=
-    head+body;
+  document.getElementById(
+    'weekGrid'
+  ).innerHTML=head+body;
 
 }
 
 
-/* MONTH VIEW */
+
+/* =========================================================
+   MONTH VIEW
+========================================================= */
 
 function renderMonth(){
 
-  document.getElementById('monthTitle').textContent=
+  document.getElementById(
+    'monthTitle'
+  ).textContent=
 
     monthCursor.toLocaleDateString(
       'en-GB',
@@ -1160,9 +1298,14 @@ function renderMonth(){
   ];
 
 
-  document.getElementById('monthHead').innerHTML=
+  document.getElementById(
+    'monthHead'
+  ).innerHTML=
 
-    names.map(x=>`<div>${x}</div>`).join('');
+    names.map(
+      x=>`<div>${x}</div>`
+    ).join('');
+
 
 
   let first=
@@ -1188,6 +1331,7 @@ function renderMonth(){
   let cells=[];
 
 
+
   for(let i=0;i<42;i++){
 
     let num=i-first+1;
@@ -1197,14 +1341,14 @@ function renderMonth(){
     let other=false;
 
 
+
     if(num<1){
 
-      date=
-        new Date(
-          monthCursor.getFullYear(),
-          monthCursor.getMonth()-1,
-          prev+num
-        );
+      date=new Date(
+        monthCursor.getFullYear(),
+        monthCursor.getMonth()-1,
+        prev+num
+      );
 
       other=true;
 
@@ -1212,12 +1356,11 @@ function renderMonth(){
 
     else if(num>days){
 
-      date=
-        new Date(
-          monthCursor.getFullYear(),
-          monthCursor.getMonth()+1,
-          num-days
-        );
+      date=new Date(
+        monthCursor.getFullYear(),
+        monthCursor.getMonth()+1,
+        num-days
+      );
 
       other=true;
 
@@ -1225,17 +1368,18 @@ function renderMonth(){
 
     else{
 
-      date=
-        new Date(
-          monthCursor.getFullYear(),
-          monthCursor.getMonth(),
-          num
-        );
+      date=new Date(
+        monthCursor.getFullYear(),
+        monthCursor.getMonth(),
+        num
+      );
 
     }
 
 
+
     let ev=eventsFor(date);
+
 
 
     cells.push(`
@@ -1244,7 +1388,11 @@ function renderMonth(){
         class="
           cell
           ${other?'other':''}
-          ${dkey(date)===dkey(new Date())?'today':''}
+          ${
+            dkey(date)===dkey(new Date())
+            ?'today'
+            :''
+          }
         "
       >
 
@@ -1252,10 +1400,14 @@ function renderMonth(){
           ${date.getDate()}
         </div>
 
+
         ${ev.map(e=>`
 
           <div class="pill ${e.type}">
-            ${e.start} ${e.title}
+
+            ${e.start}–${e.end}
+            ${e.title}
+
           </div>
 
         `).join('')}
@@ -1267,13 +1419,17 @@ function renderMonth(){
   }
 
 
-  document.getElementById('monthGrid').innerHTML=
-    cells.join('');
+  document.getElementById(
+    'monthGrid'
+  ).innerHTML=cells.join('');
 
 }
 
 
-/* SEMESTER VIEW */
+
+/* =========================================================
+   SEMESTER VIEW
+========================================================= */
 
 function renderSemester(){
 
@@ -1283,14 +1439,19 @@ function renderSemester(){
   for(
     let d=new Date(start);
     d<=regularEnd;
-    d.setDate(d.getDate()+1)
+    d.setDate(
+      d.getDate()+1
+    )
   ){
 
     eventsFor(d).forEach(e=>{
 
       all.push({
+
         date:new Date(d),
+
         ...e
+
       });
 
     });
@@ -1301,15 +1462,20 @@ function renderSemester(){
   all.sort(
     (a,b)=>
       a.date-b.date ||
-      timeMin(a.start)-timeMin(b.start)
+      timeMin(a.start)-
+      timeMin(b.start)
   );
 
 
-  document.getElementById('semesterList').innerHTML=
+  document.getElementById(
+    'semesterList'
+  ).innerHTML=
 
     `
 
-      <h2>Semester timetable</h2>
+      <h2>
+        Semester timetable
+      </h2>
 
       <p>
         17 September 2026 –
@@ -1340,7 +1506,9 @@ function renderSemester(){
 
         <div>
 
-          <b>${e.title}</b>
+          <b>
+            ${e.title}
+          </b>
 
           <br>
 
@@ -1351,17 +1519,21 @@ function renderSemester(){
         </div>
 
 
-        <div
-          class="tag ${e.type}"
-        >
+        <div class="tag ${e.type}">
 
           ${
             e.type==='induction'
+
               ? 'Welcome & Induction'
+
               : e.type==='extra'
+
                 ? 'Occasional extra'
+
                 : e.end==='17:30'
+
                   ? 'Extended session'
+
                   : 'Regular class'
           }
 
@@ -1374,7 +1546,10 @@ function renderSemester(){
 }
 
 
-/* VIEW SWITCHING */
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
 
 function show(view){
 
@@ -1388,13 +1563,18 @@ function show(view){
     document
       .getElementById(v)
       .classList
-      .toggle('hidden',v!==view);
+      .toggle(
+        'hidden',
+        v!==view
+      );
 
   });
 
 
   document
-    .querySelectorAll('.btn[data-view]')
+    .querySelectorAll(
+      '.btn[data-view]'
+    )
     .forEach(b=>{
 
       b.classList.toggle(
@@ -1407,22 +1587,34 @@ function show(view){
 }
 
 
-/* VIEW BUTTONS */
+
+/* =========================================================
+   VIEW BUTTONS
+========================================================= */
 
 document
-  .querySelectorAll('.btn[data-view]')
+  .querySelectorAll(
+    '.btn[data-view]'
+  )
   .forEach(b=>{
 
     b.onclick=()=>{
+
       show(b.dataset.view);
+
     };
 
   });
 
 
-/* DAY NAVIGATION */
 
-document.getElementById('prev').onclick=()=>{
+/* =========================================================
+   DAY NAVIGATION
+========================================================= */
+
+document.getElementById(
+  'prev'
+).onclick=()=>{
 
   current.setDate(
     current.getDate()-1
@@ -1434,7 +1626,9 @@ document.getElementById('prev').onclick=()=>{
 };
 
 
-document.getElementById('next').onclick=()=>{
+document.getElementById(
+  'next'
+).onclick=()=>{
 
   current.setDate(
     current.getDate()+1
@@ -1446,9 +1640,14 @@ document.getElementById('next').onclick=()=>{
 };
 
 
-/* WEEK NAVIGATION */
 
-document.getElementById('prevW').onclick=()=>{
+/* =========================================================
+   WEEK NAVIGATION
+========================================================= */
+
+document.getElementById(
+  'prevW'
+).onclick=()=>{
 
   current.setDate(
     current.getDate()-7
@@ -1460,7 +1659,9 @@ document.getElementById('prevW').onclick=()=>{
 };
 
 
-document.getElementById('nextW').onclick=()=>{
+document.getElementById(
+  'nextW'
+).onclick=()=>{
 
   current.setDate(
     current.getDate()+7
@@ -1472,9 +1673,14 @@ document.getElementById('nextW').onclick=()=>{
 };
 
 
-/* MONTH NAVIGATION */
 
-document.getElementById('prevM').onclick=()=>{
+/* =========================================================
+   MONTH NAVIGATION
+========================================================= */
+
+document.getElementById(
+  'prevM'
+).onclick=()=>{
 
   monthCursor.setMonth(
     monthCursor.getMonth()-1
@@ -1485,7 +1691,9 @@ document.getElementById('prevM').onclick=()=>{
 };
 
 
-document.getElementById('nextM').onclick=()=>{
+document.getElementById(
+  'nextM'
+).onclick=()=>{
 
   monthCursor.setMonth(
     monthCursor.getMonth()+1
@@ -1496,20 +1704,28 @@ document.getElementById('nextM').onclick=()=>{
 };
 
 
-/* TODAY BUTTON */
 
-document.getElementById('today').onclick=()=>{
+/* =========================================================
+   TODAY BUTTON
+========================================================= */
+
+document.getElementById(
+  'today'
+).onclick=()=>{
 
   current=new Date();
 
-  current.setHours(0,0,0,0);
+  current.setHours(
+    0,0,0,0
+  );
 
-  monthCursor=
-    new Date(
-      current.getFullYear(),
-      current.getMonth(),
-      1
-    );
+
+  monthCursor=new Date(
+    current.getFullYear(),
+    current.getMonth(),
+    1
+  );
+
 
   show('day');
 
@@ -1518,9 +1734,14 @@ document.getElementById('today').onclick=()=>{
 };
 
 
-/* DATE PICKER */
 
-document.getElementById('pick').onclick=()=>{
+/* =========================================================
+   DATE PICKER
+========================================================= */
+
+document.getElementById(
+  'pick'
+).onclick=()=>{
 
   let x=prompt(
     'Enter a date (YYYY-MM-DD):',
@@ -1535,14 +1756,16 @@ document.getElementById('pick').onclick=()=>{
 
     current=parseKey(x);
 
-    monthCursor=
-      new Date(
-        current.getFullYear(),
-        current.getMonth(),
-        1
-      );
+
+    monthCursor=new Date(
+      current.getFullYear(),
+      current.getMonth(),
+      1
+    );
+
 
     renderDay();
+
     renderWeek();
 
     show('day');
@@ -1552,16 +1775,24 @@ document.getElementById('pick').onclick=()=>{
 };
 
 
-/* CALENDAR ICON -> WEEK */
 
-document.getElementById('toWeek').onclick=()=>{
+/* =========================================================
+   CALENDAR BUTTON
+========================================================= */
+
+document.getElementById(
+  'toWeek'
+).onclick=()=>{
 
   show('week');
 
 };
 
 
-/* INITIAL LOAD */
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 render();
 
