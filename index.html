@@ -254,9 +254,7 @@ body{
 }
 
 
-/* =========================
-   WEEK VIEW
-========================= */
+/* WEEK VIEW */
 
 .weekwrap{
   overflow:auto;
@@ -326,10 +324,7 @@ body{
 }
 
 
-/* =========================
-   MONTH VIEW
-   TEXT INSTEAD OF COLOURED DOTS
-========================= */
+/* MONTH VIEW */
 
 .monthhead{
   display:grid;
@@ -379,8 +374,6 @@ body{
   color:#fff;
 }
 
-/* THIS IS THE ONLY CHANGED CALENDAR EVENT STYLE */
-
 .pill{
   padding:3px 0;
   margin:3px 0;
@@ -403,9 +396,7 @@ body{
 }
 
 
-/* =========================
-   SEMESTER VIEW
-========================= */
+/* SEMESTER VIEW */
 
 .sem{
   padding:15px;
@@ -456,9 +447,7 @@ body{
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:650px){
 
@@ -523,8 +512,6 @@ body{
 <main class="app">
 
 
-  <!-- VIEW BUTTONS -->
-
   <div class="toolbar">
 
     <button class="btn active" data-view="day">
@@ -551,9 +538,7 @@ body{
 
 
 
-  <!-- =========================
-       DAY VIEW
-  ========================= -->
+  <!-- DAY -->
 
   <section id="day">
 
@@ -606,9 +591,7 @@ body{
 
 
 
-  <!-- =========================
-       WEEK VIEW
-  ========================= -->
+  <!-- WEEK -->
 
   <section id="week" class="hidden">
 
@@ -652,9 +635,7 @@ body{
 
 
 
-  <!-- =========================
-       MONTH VIEW
-  ========================= -->
+  <!-- MONTH -->
 
   <section id="month" class="hidden">
 
@@ -704,9 +685,7 @@ body{
 
 
 
-  <!-- =========================
-       SEMESTER VIEW
-  ========================= -->
+  <!-- SEMESTER -->
 
   <section id="semester" class="hidden">
 
@@ -878,10 +857,7 @@ function eventsFor(d){
   const out=[];
 
 
-  /*
-     17 SEPTEMBER:
-     ONLY WELCOME & INDUCTION
-  */
+  /* WELCOME & INDUCTION */
 
   if(key==='2026-09-17'){
 
@@ -901,20 +877,14 @@ function eventsFor(d){
 
 
 
-  /*
-     REGULAR CLASSES BEGIN AFTER 17 SEPTEMBER
-  */
+  /* REGULAR CLASSES */
 
   if(d>start && d<=regularEnd){
 
     const dow=d.getDay();
 
 
-
-    /*
-       EVERY MONDAY
-       3PM–5PM
-    */
+    /* EVERY MONDAY */
 
     if(dow===1){
 
@@ -933,11 +903,7 @@ function eventsFor(d){
     }
 
 
-
-    /*
-       WEDNESDAY
-       2PM–5PM OR OCCASIONALLY 5:30PM
-    */
+    /* WEDNESDAY */
 
     if(dow===3){
 
@@ -961,10 +927,7 @@ function eventsFor(d){
     }
 
 
-
-    /*
-       SOME THURSDAYS
-    */
+    /* SOME THURSDAYS */
 
     if(
       dow===4 &&
@@ -991,9 +954,7 @@ function eventsFor(d){
 
 
 
-  /*
-     EXTRA CLASSES
-  */
+  /* EXTRA CLASSES */
 
   extraEvents.forEach(e=>{
 
@@ -1024,15 +985,26 @@ function eventsFor(d){
 
 /* =========================================================
    IMPORTANT:
-   OPEN ON THE REAL CURRENT DATE
+   OPEN ON THE REAL DATE WHEN THE SITE IS VISITED
 ========================================================= */
 
-let current=new Date();
+function getToday(){
 
-current.setHours(0,0,0,0);
+  const today = new Date();
+
+  return new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+}
 
 
-let monthCursor=new Date(
+let current = getToday();
+
+
+let monthCursor = new Date(
   current.getFullYear(),
   current.getMonth(),
   1
@@ -1305,7 +1277,6 @@ function renderMonth(){
     names.map(
       x=>`<div>${x}</div>`
     ).join('');
-
 
 
   let first=
@@ -1713,11 +1684,7 @@ document.getElementById(
   'today'
 ).onclick=()=>{
 
-  current=new Date();
-
-  current.setHours(
-    0,0,0,0
-  );
+  current=getToday();
 
 
   monthCursor=new Date(
@@ -1791,8 +1758,29 @@ document.getElementById(
 
 
 /* =========================================================
-   INITIAL LOAD
+   RENDER EVERYTHING
 ========================================================= */
+
+function render(){
+
+  renderDay();
+
+  renderWeek();
+
+  renderMonth();
+
+  renderSemester();
+
+}
+
+
+
+/* =========================================================
+   INITIAL LOAD
+   ALWAYS START ON THE REAL CURRENT DAY
+========================================================= */
+
+show('day');
 
 render();
 
