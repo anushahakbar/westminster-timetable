@@ -253,6 +253,7 @@ body{
   display:none!important;
 }
 
+
 /* WEEK VIEW */
 
 .weekwrap{
@@ -322,6 +323,7 @@ body{
 .wkcol .event b{
   font-size:11px;
 }
+
 
 /* MONTH VIEW */
 
@@ -394,6 +396,7 @@ body{
   background:transparent;
 }
 
+
 /* SEMESTER VIEW */
 
 .sem{
@@ -443,6 +446,7 @@ body{
   background:#edf0f2;
   color:#52616f;
 }
+
 
 /* MOBILE */
 
@@ -505,7 +509,9 @@ body{
 
 </header>
 
+
 <main class="app">
+
 
   <div class="toolbar">
 
@@ -531,6 +537,8 @@ body{
 
   </div>
 
+
+
   <!-- DAY -->
 
   <section id="day">
@@ -551,6 +559,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small" id="toWeek">
@@ -565,7 +574,9 @@ body{
 
       </div>
 
+
       <div class="datebar" id="dayDate"></div>
+
 
       <div class="daygrid">
 
@@ -578,6 +589,8 @@ body{
     </div>
 
   </section>
+
+
 
   <!-- WEEK -->
 
@@ -599,6 +612,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small">
@@ -613,11 +627,14 @@ body{
 
       </div>
 
+
       <div class="week" id="weekGrid"></div>
 
     </div>
 
   </section>
+
+
 
   <!-- MONTH -->
 
@@ -639,6 +656,7 @@ body{
 
         </div>
 
+
         <div class="side">
 
           <button class="circle small">
@@ -653,15 +671,20 @@ body{
 
       </div>
 
+
       <div class="datebar" id="monthTitle"></div>
 
+
       <div class="monthhead" id="monthHead"></div>
+
 
       <div class="monthgrid" id="monthGrid"></div>
 
     </div>
 
   </section>
+
+
 
   <!-- SEMESTER -->
 
@@ -681,11 +704,14 @@ body{
 
       </div>
 
+
       <div class="sem" id="semesterList"></div>
 
     </div>
 
   </section>
+
+
 
   <!-- FOOTER -->
 
@@ -696,15 +722,18 @@ body{
       September 2026
     </div>
 
+
     <div class="cmis">
       cmis<span>go</span><i>●</i>
     </div>
+
 
     <div>
       Accessibility statement
       &nbsp;&nbsp;&nbsp;
       About
     </div>
+
 
     <div class="copy">
       © Copyright - Advanced Computer Software Group Ltd All Rights Reserved.<br>
@@ -715,6 +744,8 @@ body{
 
 </main>
 
+
+
 <script>
 
 /* =========================================================
@@ -724,6 +755,8 @@ body{
 const start = new Date(2026,8,17);
 
 const regularEnd = new Date(2026,11,18);
+
+
 
 /* =========================================================
    OCCASIONAL EXTRA CLASSES
@@ -749,6 +782,8 @@ const extraEvents = [
 
 ];
 
+
+
 /* =========================================================
    DATE HELPERS
 ========================================================= */
@@ -763,6 +798,7 @@ function dkey(d){
 
 }
 
+
 function parseKey(s){
 
   let [y,m,d]=s.split('-').map(Number);
@@ -770,6 +806,7 @@ function parseKey(s){
   return new Date(y,m-1,d);
 
 }
+
 
 function fmt(
   d,
@@ -788,6 +825,7 @@ function fmt(
 
 }
 
+
 function timeMin(s){
 
   let [h,m]=s.split(':').map(Number);
@@ -795,6 +833,7 @@ function timeMin(s){
   return h*60+m;
 
 }
+
 
 function clock(h){
 
@@ -806,6 +845,8 @@ function clock(h){
 
 }
 
+
+
 /* =========================================================
    EVENTS FOR EACH DATE
 ========================================================= */
@@ -815,6 +856,7 @@ function eventsFor(d){
   const key=dkey(d);
 
   const out=[];
+
 
   /* WELCOME & INDUCTION */
 
@@ -834,11 +876,14 @@ function eventsFor(d){
 
   }
 
+
+
   /* REGULAR CLASSES */
 
   if(d>start && d<=regularEnd){
 
     const dow=d.getDay();
+
 
     /* EVERY MONDAY */
 
@@ -858,27 +903,19 @@ function eventsFor(d){
 
     }
 
+
     /* WEDNESDAY */
 
     if(dow===3){
 
-      const wednesdayLateFinish = [
-        '2026-09-23',
-        '2026-09-30',
-        '2026-10-21',
-        '2026-10-28',
-        '2026-11-18',
-        '2026-12-09',
-        '2026-12-16'
-      ].includes(key);
+      const finish530 =
+        [23, 30, 7, 14, 21, 28].includes(d.getDate());
 
       out.push({
 
         start:'14:00',
 
-        end:wednesdayLateFinish
-          ? '17:30'
-          : '17:00',
+        end: finish530 ? '17:30' : '17:00',
 
         title:'Regular class',
 
@@ -887,6 +924,7 @@ function eventsFor(d){
       });
 
     }
+
 
     /* SOME THURSDAYS */
 
@@ -913,6 +951,8 @@ function eventsFor(d){
 
   }
 
+
+
   /* EXTRA CLASSES */
 
   extraEvents.forEach(e=>{
@@ -935,9 +975,12 @@ function eventsFor(d){
 
   });
 
+
   return out;
 
 }
+
+
 
 /* =========================================================
    IMPORTANT:
@@ -956,7 +999,9 @@ function getToday(){
 
 }
 
+
 let current = getToday();
+
 
 let monthCursor = new Date(
   current.getFullYear(),
@@ -964,10 +1009,14 @@ let monthCursor = new Date(
   1
 );
 
+
+
 const hours=[
   8,9,10,11,12,13,14,
   15,16,17,18,19,20,21
 ];
+
+
 
 /* =========================================================
    DAY VIEW
@@ -989,6 +1038,7 @@ function renderDay(){
       }
     );
 
+
   document.getElementById(
     'times'
   ).innerHTML=
@@ -1001,7 +1051,9 @@ function renderDay(){
 
     `).join('');
 
+
   const ev=eventsFor(current);
+
 
   document.getElementById(
     'hours'
@@ -1016,8 +1068,10 @@ function renderDay(){
         const top=
           (timeMin(e.start)-8*60)*2;
 
+
         const height=
           (timeMin(e.end)-timeMin(e.start))*2;
+
 
         return `
 
@@ -1049,6 +1103,8 @@ function renderDay(){
 
 }
 
+
+
 /* =========================================================
    WEEK VIEW
 ========================================================= */
@@ -1057,18 +1113,22 @@ function renderWeek(){
 
   let monday=new Date(current);
 
+
   monday.setDate(
     current.getDate()-
     (current.getDay()+6)%7
   );
+
 
   const names=[
     'Mon','Tue','Wed',
     'Thu','Fri','Sat','Sun'
   ];
 
+
   let head=
     '<div class="wktime"></div>';
+
 
   head+=names.map((n,i)=>{
 
@@ -1077,6 +1137,7 @@ function renderWeek(){
     x.setDate(
       monday.getDate()+i
     );
+
 
     return `
 
@@ -1101,6 +1162,7 @@ function renderWeek(){
 
   }).join('');
 
+
   let body=
 
     '<div class="wktime">'+
@@ -1115,6 +1177,8 @@ function renderWeek(){
 
     '</div>';
 
+
+
   for(let i=0;i<7;i++){
 
     let x=new Date(monday);
@@ -1123,7 +1187,9 @@ function renderWeek(){
       monday.getDate()+i
     );
 
+
     let ev=eventsFor(x);
+
 
     body+=`
 
@@ -1134,8 +1200,10 @@ function renderWeek(){
           let top=
             (timeMin(e.start)-480)*2;
 
+
           let h=
             (timeMin(e.end)-timeMin(e.start))*2;
+
 
           return `
 
@@ -1167,11 +1235,14 @@ function renderWeek(){
 
   }
 
+
   document.getElementById(
     'weekGrid'
   ).innerHTML=head+body;
 
 }
+
+
 
 /* =========================================================
    MONTH VIEW
@@ -1191,10 +1262,12 @@ function renderMonth(){
       }
     );
 
+
   const names=[
     'Mon','Tue','Wed',
     'Thu','Fri','Sat','Sun'
   ];
+
 
   document.getElementById(
     'monthHead'
@@ -1204,8 +1277,10 @@ function renderMonth(){
       x=>`<div>${x}</div>`
     ).join('');
 
+
   let first=
     (monthCursor.getDay()+6)%7;
+
 
   let days=
     new Date(
@@ -1214,6 +1289,7 @@ function renderMonth(){
       0
     ).getDate();
 
+
   let prev=
     new Date(
       monthCursor.getFullYear(),
@@ -1221,7 +1297,10 @@ function renderMonth(){
       0
     ).getDate();
 
+
   let cells=[];
+
+
 
   for(let i=0;i<42;i++){
 
@@ -1230,6 +1309,8 @@ function renderMonth(){
     let date;
 
     let other=false;
+
+
 
     if(num<1){
 
@@ -1265,7 +1346,11 @@ function renderMonth(){
 
     }
 
+
+
     let ev=eventsFor(date);
+
+
 
     cells.push(`
 
@@ -1285,6 +1370,7 @@ function renderMonth(){
           ${date.getDate()}
         </div>
 
+
         ${ev.map(e=>`
 
           <div class="pill ${e.type}">
@@ -1302,11 +1388,14 @@ function renderMonth(){
 
   }
 
+
   document.getElementById(
     'monthGrid'
   ).innerHTML=cells.join('');
 
 }
+
+
 
 /* =========================================================
    SEMESTER VIEW
@@ -1315,6 +1404,7 @@ function renderMonth(){
 function renderSemester(){
 
   let all=[];
+
 
   for(
     let d=new Date(start);
@@ -1338,12 +1428,14 @@ function renderSemester(){
 
   }
 
+
   all.sort(
     (a,b)=>
       a.date-b.date ||
       timeMin(a.start)-
       timeMin(b.start)
   );
+
 
   document.getElementById(
     'semesterList'
@@ -1381,6 +1473,7 @@ function renderSemester(){
 
         </div>
 
+
         <div>
 
           <b>
@@ -1394,6 +1487,7 @@ function renderSemester(){
           </small>
 
         </div>
+
 
         <div class="tag ${e.type}">
 
@@ -1421,6 +1515,8 @@ function renderSemester(){
 
 }
 
+
+
 /* =========================================================
    VIEW SWITCHING
 ========================================================= */
@@ -1444,6 +1540,7 @@ function show(view){
 
   });
 
+
   document
     .querySelectorAll(
       '.btn[data-view]'
@@ -1458,6 +1555,8 @@ function show(view){
     });
 
 }
+
+
 
 /* =========================================================
    VIEW BUTTONS
@@ -1477,6 +1576,8 @@ document
 
   });
 
+
+
 /* =========================================================
    DAY NAVIGATION
 ========================================================= */
@@ -1494,6 +1595,7 @@ document.getElementById(
 
 };
 
+
 document.getElementById(
   'next'
 ).onclick=()=>{
@@ -1506,6 +1608,8 @@ document.getElementById(
   renderWeek();
 
 };
+
+
 
 /* =========================================================
    WEEK NAVIGATION
@@ -1524,6 +1628,7 @@ document.getElementById(
 
 };
 
+
 document.getElementById(
   'nextW'
 ).onclick=()=>{
@@ -1536,6 +1641,8 @@ document.getElementById(
   renderDay();
 
 };
+
+
 
 /* =========================================================
    MONTH NAVIGATION
@@ -1553,6 +1660,7 @@ document.getElementById(
 
 };
 
+
 document.getElementById(
   'nextM'
 ).onclick=()=>{
@@ -1565,4 +1673,118 @@ document.getElementById(
 
 };
 
-/
+
+
+/* =========================================================
+   TODAY BUTTON
+========================================================= */
+
+document.getElementById(
+  'today'
+).onclick=()=>{
+
+  current=getToday();
+
+
+  monthCursor=new Date(
+    current.getFullYear(),
+    current.getMonth(),
+    1
+  );
+
+
+  show('day');
+
+  render();
+
+};
+
+
+
+/* =========================================================
+   DATE PICKER
+========================================================= */
+
+document.getElementById(
+  'pick'
+).onclick=()=>{
+
+  let x=prompt(
+    'Enter a date (YYYY-MM-DD):',
+    dkey(current)
+  );
+
+
+  if(
+    x &&
+    /^\d{4}-\d{2}-\d{2}$/.test(x)
+  ){
+
+    current=parseKey(x);
+
+
+    monthCursor=new Date(
+      current.getFullYear(),
+      current.getMonth(),
+      1
+    );
+
+
+    renderDay();
+
+    renderWeek();
+
+    show('day');
+
+  }
+
+};
+
+
+
+/* =========================================================
+   CALENDAR BUTTON
+========================================================= */
+
+document.getElementById(
+  'toWeek'
+).onclick=()=>{
+
+  show('week');
+
+};
+
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function render(){
+
+  renderDay();
+
+  renderWeek();
+
+  renderMonth();
+
+  renderSemester();
+
+}
+
+
+
+/* =========================================================
+   INITIAL LOAD
+   ALWAYS START ON THE REAL CURRENT DAY
+========================================================= */
+
+show('day');
+
+render();
+
+</script>
+
+</body>
+</html>
+
