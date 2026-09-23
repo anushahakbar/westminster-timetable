@@ -889,11 +889,32 @@ function eventsFor(d){
 
     if(dow===1){
 
+      /*
+        20% of Mondays finish at 4:30.
+        Using every 5th Monday gives exactly 20%.
+      */
+
+      let mondayIndex=0;
+
+      for(
+        let x=new Date(start);
+        x<d;
+        x.setDate(x.getDate()+1)
+      ){
+
+        if(x.getDay()===1){
+          mondayIndex++;
+        }
+
+      }
+
+      const finish430=mondayIndex%5===0;
+
       out.push({
 
         start:'15:00',
 
-        end:'17:00',
+        end:finish430 ? '16:30' : '17:00',
 
         title:'Regular class',
 
@@ -904,18 +925,15 @@ function eventsFor(d){
     }
 
 
-    /* WEDNESDAY */
+    /* EVERY WEDNESDAY — ALL FINISH 5:30 */
 
     if(dow===3){
-
-      const finish530 =
-        [23, 30, 7, 14, 21, 28].includes(d.getDate());
 
       out.push({
 
         start:'14:00',
 
-        end: finish530 ? '17:30' : '17:00',
+        end:'17:30',
 
         title:'Regular class',
 
@@ -935,11 +953,39 @@ function eventsFor(d){
       )%2===0
     ){
 
+      /*
+        40% of Thursday classes finish at 4:30.
+        Using 2 out of every 5 qualifying Thursdays.
+      */
+
+      let thursdayIndex=0;
+
+      for(
+        let x=new Date(start);
+        x<d;
+        x.setDate(x.getDate()+1)
+      ){
+
+        if(
+          x.getDay()===4 &&
+          Math.floor(
+            (x.getDate()+x.getMonth())/3
+          )%2===0
+        ){
+
+          thursdayIndex++;
+
+        }
+
+      }
+
+      const finish430=thursdayIndex%5<2;
+
       out.push({
 
         start:'14:00',
 
-        end:'17:00',
+        end:finish430 ? '16:30' : '17:00',
 
         title:'Regular class',
 
@@ -1787,4 +1833,3 @@ render();
 
 </body>
 </html>
-
